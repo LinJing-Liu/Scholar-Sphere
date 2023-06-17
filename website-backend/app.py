@@ -8,7 +8,19 @@ def home():
     return "my API"
 
 
-@app.route("/api/endpoint", methods=["POST"])
+@app.route("/api/addterm", methods=["POST"])
+def receive_entry():
+    input_term = request.form.get("term", "")
+    input_definition = request.form.get("definition", "")
+    input_explanation = request.form.get("term", "")
+    input_example = request.form.get("definition", "")
+    input_image = request.form.get("definition", "")
+    return (
+        jsonify({"status": "success", "message": "input word recieved"}),
+        200,
+    )
+
+
 def receive_data():
     data = request.json
     print(data)  # This will print the JSON body sent from your extension
