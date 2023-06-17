@@ -2,7 +2,10 @@
   "name": "Scholar Sphere",
   "version": "1.0",
   "manifest_version": 3,
-  "action":{
-      "default_popup": "html/index.html"
+  "permissions": [
+    "tabs"
+  ],
+  "action": {
+    "default_popup": "html/index.html"
   }
 }

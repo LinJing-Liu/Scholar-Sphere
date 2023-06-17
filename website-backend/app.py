@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/", methods=["GET"])
@@ -10,21 +12,18 @@ def home():
 
 @app.route("/api/addterm", methods=["POST"])
 def receive_entry():
-    input_term = request.form.get("term", "")
-    input_definition = request.form.get("definition", "")
-    input_explanation = request.form.get("term", "")
-    input_example = request.form.get("definition", "")
-    input_image = request.form.get("definition", "")
+    data = request.get_json()
+    input_word = data.get("word", "no word")
+    input_definition = data.get("definition", "no def")
+    input_explanation = data.get("explanation", "no exp")
+    input_example = data.get("example", "no ex")
+    input_tag = data.get("tag", "no tag")
+    print("!!!!!!!!!!!!!!!")
+    print(input_word, input_definition, input_explanation, input_example, input_tag)
     return (
         jsonify({"status": "success", "message": "input word recieved"}),
         200,
     )
-
-
-def receive_data():
-    data = request.json
-    print(data)  # This will print the JSON body sent from your extension
-    return "Data received!", 200
 
 
 if __name__ == "__main__":
