@@ -31,8 +31,16 @@
           <label for="pictureInput">Picture</label>
         </div>
         <div class="form-group">
-          <label for="tagInput">Tag</label>
-          <input class="form-control" id="tagInput" placeholder="Enter tag (separated by commas)">
+          <label>Confidence Level</label>
+          <input type="range" class="form-range" min="1" max="5" step="1" id="confidenceRangeInput">
+        </div>
+        <div class="form-group">
+          <label>Custom Tags</label>
+          <ul id="customTagAdded"></ul>
+          <hr />
+          <div class="form-check">
+            <ul id="customTagList"></ul>
+          </div>
         </div>
         <button type="submit" class="btn btn-primary" id="addWordButton">Submit</button>
       </form>
