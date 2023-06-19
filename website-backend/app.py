@@ -3,9 +3,11 @@ from flask_cors import CORS
 import websockets
 import asyncio
 import json
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 @app.route("/", methods=["GET"])
@@ -54,6 +56,10 @@ def receive_entry():
     input_tag = data.get("tag", "")
     print("!!!!!!!!!!!!!!!")
     print(input_word, input_definition, input_explanation, input_example, input_tag)
+    socketio.emit(
+        "new word",
+        (input_word, input_definition, input_explanation, input_example, input_tag),
+    )
     return (
         jsonify({"status": "success", "message": "input word recieved"}),
         200,
@@ -61,6 +67,6 @@ def receive_entry():
 
 
 if __name__ == "__main__":
-    app.run(
-        debug=True, host="0.0.0.0", port=5000
+    socketio.run(
+        app, debug=True, host="0.0.0.0", port=5000
     )  # This will start the server on port 5000

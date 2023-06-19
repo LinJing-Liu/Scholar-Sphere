@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
-import { w3cwebsocket as WebSocket } from 'websocket';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-
+import io from 'socket.io-client';
 
 function App() {
   return (
@@ -17,37 +16,15 @@ function App() {
           This is my body
         </p>
         <WordList></WordList>
-
+        <MyComponent></MyComponent>
       </body>
     </div >
   );
 }
 
 function WordList() {
-  // useEffect(() => {
-  //   const socket = new WebSocket('ws://localhost:8765');
 
-  //   socket.onopen = () => {
-  //     console.log('WebSocket connection established');
-  //   };
 
-  //   socket.onmessage = (event) => {
-  //     const message = event.data;
-  //     const wordData = JSON.parse(message);
-  //     console.log('wordData: ', wordData)
-  //   };
-  //   socket.onclose = (event) => {
-  //     console.log('WebSocket connection closed:', event.code, event.reason);
-  //   };
-
-  //   socket.onerror = (error) => {
-  //     console.error('WebSocket error:', error);
-  //   };
-
-  //   return () => {
-  //     socket.close(); // Close the WebSocket connection on component unmount
-  //   };
-  // }, []);
   return (
     <div>
       <h2>My word list: </h2>
@@ -69,6 +46,38 @@ function Word({ word = "", definition = "", explanation = "", example = "", tags
     </div>
   );
 }
+const MyComponent = () => {
+  const [in_word, setWord] = useState('word not set');
+  const [in_def, setDef] = useState('');
+  const [in_exp, setExp] = useState('');
+  const [in_ex, setEx] = useState('');
+  const [in_tag, setTag] = useState('[tags not set yet, fix later]');
+
+  useEffect(() => {
+    const socket = io('http://localhost:5000');
+
+    socket.on('new word', (input_word, input_definition, input_explanation, input_example, input_tag) => {
+      // on receiving a message, update states
+
+      setWord(input_word);
+      setDef(input_definition);
+      setExp(input_explanation);
+      setEx(input_example);
+      //setTag(input_tag);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  return (
+    <div>
+
+      <Word word={in_word} definition={in_def} explanation={in_exp} example={in_ex} tags={in_tag}></Word>
+    </div>
+  );
+};
 
 
 export default App;
