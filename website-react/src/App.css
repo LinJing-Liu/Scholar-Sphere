@@ -3,12 +3,19 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 10vh;
+  background-color: #A7ED6E;
+  min-height: 5vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  font-size: calc(8px + 2vmin);
+  color: #376d07;
+}
+
+.flashcard {
+  color: blue;
+  border: '1px solid black';
+  padding: '20px';
+  margin: '20px'
 }
