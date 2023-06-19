@@ -13,28 +13,65 @@ function App() {
 
       </header>
       <body className="App-body">
-        <WordList></WordList>
-        <Game></Game>
+        <InputListener></InputListener>
       </body>
     </div >
   );
 }
 
-function WordList() {
-  const word_example = {
-    word: 'example word',
-    definition: 'ex def',
-    explanation: 'ex exp',
-    example: 'ex ex',
-    tag: 'ex tag'
-  }
+
+const InputListener = () => {
+  // Initialize state with the value in localStorage (if it exists) or an empty array
+  const [word, setWord] = useState(() => {
+    const savedWords = localStorage.getItem("words");
+    return savedWords ? JSON.parse(savedWords) : [];
+  });
+
+  useEffect(() => {
+    const socket = io('http://localhost:5000');
+
+    socket.on('new word', (input_word, input_definition, input_explanation, input_example, input_tag) => {
+      setWord(prevWords => {
+        const newWords = [...prevWords, {
+          word: input_word,
+          definition: input_definition,
+          explanation: input_explanation,
+          example: input_example,
+          tag: input_tag
+          //didn't implement parsing tags yet
+        }];
+
+        // Save the new words array to localStorage
+        localStorage.setItem("words", JSON.stringify(newWords));
+
+        return newWords;
+      });
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  return (
+    <div>
+      <WordList words={word}> </WordList>
+      <Game words={word}></Game>
+    </div>
+  );
+};
+
+
+
+function WordList({ words }) {
 
   return (
     <div>
       <h1>My word list: </h1>
-      <Word data={word_example} ></Word>
 
-      <InputListener></InputListener>
+      {words.map((word, index) => (
+        <Word key={index} data={word} />
+      ))}
     </div>
   );
 }
@@ -78,57 +115,9 @@ function FlashCard({ data }) {
 }
 
 
-const InputListener = () => {
-  // Initialize state with the value in localStorage (if it exists) or an empty array
-  const [word, setWord] = useState(() => {
-    const savedWords = localStorage.getItem("words");
-    return savedWords ? JSON.parse(savedWords) : [];
-  });
-
-  useEffect(() => {
-    const socket = io('http://localhost:5000');
-
-    socket.on('new word', (input_word, input_definition, input_explanation, input_example, input_tag) => {
-      setWord(prevWords => {
-        const newWords = [...prevWords, {
-          word: input_word,
-          definition: input_definition,
-          explanation: input_explanation,
-          example: input_example,
-          tag: input_tag
-          //didn't implement parsing tags yet
-        }];
-
-        // Save the new words array to localStorage
-        localStorage.setItem("words", JSON.stringify(newWords));
-
-        return newWords;
-      });
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
-  return (
-    <div>
-      {word.map((word, index) => (
-        <Word key={index} data={word} />
-      ))}
-    </div>
-  );
-};
 
 
-const DICTIONARY = [
-  { word: 'apple', definition: 'A round fruit with red or yellow or green skin.' },
-  { word: 'banana', definition: 'Long curved fruit which grows in clusters and has soft pulpy flesh and yellow skin when ripe.' },
-  { word: 'cat', definition: 'A small domesticated carnivorous mammal with soft fur, a short snout, and retractile claws.' },
-  // You can add as many words and definitions as you want.
-];
-
-function Game() {
+function Game({ words }) {
   const [currentWord, setCurrentWord] = useState({});
   const [score, setScore] = useState(0);
   const [inputWord, setInputWord] = useState('');
@@ -139,9 +128,18 @@ function Game() {
   }, []);
 
   function chooseRandomWord() {
-    const randomWord = DICTIONARY[Math.floor(Math.random() * DICTIONARY.length)];
-    setCurrentWord(randomWord);
+    const wordsWithDefinitions = words.filter(word => word.definition && word.definition.trim() !== '');
+    if (wordsWithDefinitions.length > 0) {
+      const randomWord = wordsWithDefinitions[Math.floor(Math.random() * wordsWithDefinitions.length)];
+      setCurrentWord(randomWord);
+    } else {
+      console.log('No words with definitions found.');
+    }
   }
+
+
+
+
 
   function handleInputChange(event) {
     setInputWord(event.target.value);
