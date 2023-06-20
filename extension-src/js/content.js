@@ -1,17 +1,20 @@
-<!DOCTYPE html>
-<html>
+const modalStyle = `
+    height: 500px;
+    width: 300px;
+    top: 20px;
+    left: auto;
+    right: 20px;
+    float: right;
+    margin: 0px;
+    border-radius: 20px;
+    background-color: white;
+    position: fixed; 
+    border: none;
+    box-shadow: 0px 12px 48px rgba(29, 5, 64, 0.32);
+`;
 
-<head>
-  <title>Scholar Sphere</title>
-  <meta charset="utf-8">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../style/index.css" rel="stylesheet">
-  <script type="module" src="../js/index.js"></script>
-</head>
-
-<body>
-  <h1 id="extensionTitle">Scholar Sphere</h1>
-  <form id="extensionForm">
+const modalHTML = `
+<form id="extensionForm">
     <h2 id="formTitle">Add Word</h2>
     <div class="form-group">
       <label for="wordInput">Word</label>
@@ -40,13 +43,39 @@
     </div>
     <div class="form-group">
       <label>Custom Tags</label>
-      <div id="customTagContainer">
-        <ul id="customTagAdded"></ul>
+      <ul id="customTagAdded"></ul>
+      <hr />
+      <div class="form-check">
+        <ul id="customTagList"></ul>
       </div>
-      <ul id="customTagList"></ul>
     </div>
     <button type="submit" class="btn btn-primary" id="addWordButton">Submit</button>
-  </form>
-</body>
+</form>`;
 
-</html>
+function showAddWordModal(index) {
+    const modal = document.createElement("dialog");
+    modal.setAttribute("style", modalStyle);
+    modal.innerHTML = modalHTML;
+    document.body.appendChild(modal);
+
+    const dialog = document.querySelector("dialog");
+    
+    dialog.showModal();
+    document.getElementById("addWordButton").addEventListener("click", function() {
+        dialog.close();
+    });
+
+    index.onLoad();
+}
+
+(async () => {
+    const source = chrome.runtime.getURL("js/index.js");
+    const index = await import(source);
+
+    chrome.runtime.onMessage.addListener((request) => {
+        console.log(request);
+        if (request.type === "addWord") {
+            showAddWordModal(index);
+        }
+    });
+})();
