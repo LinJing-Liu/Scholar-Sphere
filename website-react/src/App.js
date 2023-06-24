@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import io from 'socket.io-client';
-import ReactCardFlip from 'react-card-flip';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './HomePage.js';
+import FlashCardPage from './FlashCardPage.js'; // Assume your Home component is in Home.js
+import WordListPage from './WordListPage.js';
+import GamePage from './GamePage.js';
+import StatisticsPage from './StatisticsPage.js';
+import Navbar from './NavigationBar';
 
 function App() {
+  //   <Router>
+  //   <Navbar />
+  //   <Routes>
+  //     <Route path="/" exact component={HomePage} />
+  //     <Route path="/word-list" component={WordListPage} />
+  //     <Route path="/games" component={GamePage} />
+  //     <Route path="/statistics" component={StatisticsPage} />
+  //   </Routes>
+  // </Router>
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>
-          ScholarSphere
-        </h1>
-
-      </header>
       <body className="App-body">
+        <FixedNavButtons />
         <InputListener></InputListener>
       </body>
     </div >
@@ -52,135 +62,54 @@ const InputListener = () => {
       socket.disconnect();
     };
   }, []);
-
   return (
     <div>
-      <WordList words={word}> </WordList>
-      <Game words={word}></Game>
+
+      <div id="home-page-container">
+        <HomePage />
+      </div>
+      <div id="flash-card-page-container">
+        <FlashCardPage words={word}></FlashCardPage>
+      </div>
+
+      <div id="word-list-page-container">
+        <WordListPage words={word} />
+      </div>
+      <div id="game-page-container">
+        <GamePage words={word}></GamePage>
+      </div>
+      <div id="statistics-page-container">
+        <StatisticsPage />
+      </div>
+
     </div>
   );
 };
 
-
-
-function WordList({ words }) {
-
-  return (
-    <div>
-      <h1>My word list: </h1>
-
-      {words.map((word, index) => (
-        <Word key={index} data={word} />
-      ))}
-    </div>
-  );
-}
-
-function Word({ data }) {
-  return (
-    <div className='flashcard'>
-      <h2>{data.word}</h2>
-      <p>Definition: {data.definition}</p>
-      <p>Explanation: {data.explanation}</p>
-      <p>Example: {data.example}</p>
-      <p>Tags: {data.tags}</p>
-    </div>
-  );
-}
-
-//!!!! doesn't work
-function FlashCard({ data }) {
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  const handleClick = () => {
-    setIsFlipped(!isFlipped);
+const ToPageButton = ({ id, buttonText }) => {
+  const handleScroll = () => {
+    const container = document.getElementById(id);
+    container.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
-      <div onClick={handleClick} className='flashcard'>
-        {/* Front of the card */}
-        <h2>{data.word}</h2>
-      </div>
-
-      <div onClick={handleClick} className='flashcard'>
-        {/* Back of the card */}
-        <p>Definition: {data.definition}</p>
-        <p>Explanation: {data.explanation}</p>
-        <p>Example: {data.example}</p>
-        <p>Tags: {data.tags}</p>
-      </div>
-    </ReactCardFlip>
+    <button onClick={handleScroll}>{buttonText}</button>
   );
-}
+};
 
-
-
-
-function Game({ words }) {
-  const [currentWord, setCurrentWord] = useState({});
-  const [score, setScore] = useState(0);
-  const [inputWord, setInputWord] = useState('');
-
-  // Initialize game with random word
-  React.useEffect(() => {
-    chooseRandomWord();
-  }, []);
-
-  function chooseRandomWord() {
-    const wordsWithDefinitions = words.filter(word => word.definition && word.definition.trim() !== '');
-    if (wordsWithDefinitions.length > 0) {
-      const randomWord = wordsWithDefinitions[Math.floor(Math.random() * wordsWithDefinitions.length)];
-      setCurrentWord(randomWord);
-    } else {
-      console.log('No words with definitions found.');
-    }
-  }
-
-
-
-
-
-  function handleInputChange(event) {
-    setInputWord(event.target.value);
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    if (inputWord.toLowerCase() === currentWord.word.toLowerCase()) {
-      setScore(score + 1);
-    }
-    chooseRandomWord();
-    setInputWord('');
-  }
-
+const FixedNavButtons = () => {
   return (
-    <div>
-      <h1>Word Game</h1>
-      <h2>Score: {score}</h2>
-      <p>Definition: {currentWord.definition}</p>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={inputWord}
-          onChange={handleInputChange}
-          placeholder="Type the word here"
-          required
-        />
-        <button type="submit">Submit</button>
-      </form>
+    <div className="fixed-nav-buttons">
+      <div className="brand">ScholarSphere</div>
+      <div className="buttons">
+        <ToPageButton id="home-page-container" buttonText="Home" />
+        <ToPageButton id="flash-card-page-container" buttonText="Flashcards" />
+        <ToPageButton id="word-list-page-container" buttonText="Word List" />
+        <ToPageButton id="game-page-container" buttonText="Games" />
+        <ToPageButton id="statistics-page-container" buttonText="Statistics" />
+      </div>
     </div>
   );
-
-
-
-}
-
-
-
-
-
-
+};
 
 export default App;
