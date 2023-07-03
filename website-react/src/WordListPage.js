@@ -3,7 +3,7 @@ import './App.css';
 import io from 'socket.io-client';
 import DOMPurify from "dompurify";
 
-const WordListPage = ({ words }) => {
+const WordListPage = ({ words, onUpdateWord, onDeleteWord }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (event) => {
@@ -28,25 +28,27 @@ const WordListPage = ({ words }) => {
         value={searchTerm}
         onChange={handleSearch}
       />
-      <WordList words={filteredWords} searchTerm={searchTerm} />
+      <WordList words={filteredWords} searchTerm={searchTerm} onUpdateWord={onUpdateWord} onDeleteWord={onDeleteWord} />
+
       End WordListPage
     </div>
   );
 };
-function WordList({ words, searchTerm }) {
+function WordList({ words, searchTerm, onUpdateWord, onDeleteWord }) {
   return (
     <div className="word-list">
-
       <div className="word-grid">
         {words && words.map((word, index) => (
-          <Word key={index} data={word} searchTerm={searchTerm} />
+          <Word key={index} data={word} searchTerm={searchTerm} onUpdateWord={(updatedWord) => onUpdateWord(updatedWord, index)} onDeleteWord={() => onDeleteWord(index)} />
         ))}
       </div>
     </div>
   );
 }
 
-function Word({ data, searchTerm }) {
+
+
+function Word({ data, searchTerm, onUpdateWord, onDeleteWord }) {
   const regex = new RegExp(`(${searchTerm})`, 'gi');
 
   const [editing, setEditing] = useState(false);
@@ -62,6 +64,10 @@ function Word({ data, searchTerm }) {
   const handleChange = (event) => {
     setTempData({ ...tempData, [event.target.name]: event.target.value });
   };
+  const handleDelete = () => {
+    // Call the function passed from the parent component
+    onDeleteWord();
+  };
 
   const handleEdit = () => {
     setEditing(true);
@@ -70,6 +76,7 @@ function Word({ data, searchTerm }) {
   const handleSave = () => {
     // Here, you can make an API call to save the changes,
     // and then, set editing to false.
+    onUpdateWord(tempData); // Call the function passed from the parent component
     setEditing(false);
   };
   if (editing) {
@@ -91,6 +98,7 @@ function Word({ data, searchTerm }) {
         <input name="tags" value={tempData.tags} onChange={handleChange} />
         <br></br>
         <button onClick={handleSave}>Save</button>
+
       </div>
     );
   }
@@ -108,6 +116,7 @@ function Word({ data, searchTerm }) {
       <p><strong>Example:</strong> <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(example) }}></span></p>
       {tags && <p><strong>Tags:</strong> <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(tags) }}></span></p>}
       <button onClick={handleEdit}>Edit</button>
+      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 }

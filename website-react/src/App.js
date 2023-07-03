@@ -19,29 +19,42 @@ function App() {
   //     <Route path="/statistics" component={StatisticsPage} />
   //   </Routes>
   // </Router>
-  return (
-    <div className="App">
-      <body className="App-body">
-        <FixedNavButtons />
-        <InputListener></InputListener>
-      </body>
-    </div >
-  );
-}
-
-
-const InputListener = () => {
-  // Initialize state with the value in localStorage (if it exists) or an empty array
-  const [word, setWord] = useState(() => {
+  const [words, setWords] = useState(() => {
     const savedWords = localStorage.getItem("words");
     return savedWords ? JSON.parse(savedWords) : [];
   });
 
+  const handleUpdateWord = (updatedWord, index) => {
+    const newWords = [...words];
+    newWords[index] = updatedWord;
+    setWords(newWords);
+    localStorage.setItem("words", JSON.stringify(newWords));
+  };
+
+  const handleDeleteWord = (index) => {
+    const newWords = [...words];
+    newWords.splice(index, 1);
+    setWords(newWords);
+    localStorage.setItem("words", JSON.stringify(newWords));
+  };
+
+  return (
+    <div className="App">
+      <body className="App-body">
+        <FixedNavButtons />
+        <InputListener words={words} setWords={setWords} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} />
+      </body>
+    </div>
+  );
+}
+
+
+const InputListener = ({ words, setWords, onUpdateWord, onDeleteWord }) => {
   useEffect(() => {
     const socket = io('http://localhost:5000');
 
     socket.on('new word', (input_word, input_definition, input_explanation, input_example, input_tag) => {
-      setWord(prevWords => {
+      setWords(prevWords => {
         const newWords = [...prevWords, {
           word: input_word,
           definition: input_definition,
@@ -61,7 +74,7 @@ const InputListener = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [setWords]);
   return (
     <div>
 
@@ -69,14 +82,14 @@ const InputListener = () => {
         <HomePage />
       </div>
       <div id="flash-card-page-container">
-        <FlashCardPage words={word}></FlashCardPage>
+        <FlashCardPage words={words}></FlashCardPage>
       </div>
 
       <div id="word-list-page-container">
-        <WordListPage words={word} />
+        <WordListPage words={words} onUpdateWord={onUpdateWord} onDeleteWord={onDeleteWord} />
       </div>
       <div id="game-page-container">
-        <GamePage words={word}></GamePage>
+        <GamePage words={words}></GamePage>
       </div>
       <div id="statistics-page-container">
         <StatisticsPage />
