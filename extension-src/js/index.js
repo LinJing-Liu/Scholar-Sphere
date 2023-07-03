@@ -1,7 +1,11 @@
 // TODO: update tags with data from API
-const DEFAULTTAGS = ["cs", "math", "english", "science"];
+const TAGS = ["cs", "math", "english", "science"];
 
-var WORDINPUTELE, DEFINITIONINPUTELE, EXPLANATIONINPUTELE, EXAMPLEINPUTELE, CONFIDENCEARANGE, CUSTOMADDEDLIST, CUSTOMINVLIST;
+const ADDICON = chrome.runtime.getURL("img/addIcon.png");
+const REMOVEICON = chrome.runtime.getURL("img/removeIcon.png");
+
+var WORDINPUTELE, DEFINITIONINPUTELE, EXPLANATIONINPUTELE, EXAMPLEINPUTELE, CONFIDENCEARANGE, PICTUREINPUTELE;
+var CUSTOMADDEDLIST, CUSTOMINVLIST, REQUIREFIELDNOTICE, NEWTAGINPUT;
 
 document.addEventListener("DOMContentLoaded", function () {
   onLoad();
@@ -14,14 +18,19 @@ function onLoad() {
   EXPLANATIONINPUTELE = document.getElementById("explanationInput");
   EXAMPLEINPUTELE = document.getElementById("exampleInput");
   CONFIDENCEARANGE = document.getElementById("confidenceRangeInput");
+  PICTUREINPUTELE = document.getElementById("urlInput");
   CUSTOMADDEDLIST = document.getElementById("customTagAdded");
   CUSTOMINVLIST = document.getElementById("customTagList");
+  REQUIREFIELDNOTICE = document.getElementById("requireFieldNotice");
+  NEWTAGINPUT = document.getElementById("newTagInput");
 
   const BADGEIDS = createTagElements(CUSTOMINVLIST);
   for (var id of BADGEIDS) {
     document.getElementById(id).addEventListener("click", function (e) { addCustomTag(e); });
     document.getElementById(id + "Img").addEventListener("click", function (e) { addCustomTag(e); });
   }
+  
+  document.getElementById("addTagButton").addEventListener("click", addTag);
   document.getElementById("addWordButton").addEventListener("click", addWord);
 }
 
@@ -39,10 +48,10 @@ function addCustomTag(e) {
   const imgElement = document.getElementById(badgeId + "Img");
 
   if (ulId == "customTagAdded") {
-    imgElement.setAttribute("src", "../img/addIcon.png");
+    imgElement.setAttribute("src", ADDICON);
     CUSTOMINVLIST.appendChild(liElement);
   } else {
-    imgElement.setAttribute("src", "../img/removeIcon.png");
+    imgElement.setAttribute("src", REMOVEICON);
     CUSTOMADDEDLIST.appendChild(liElement);
   }
 }
@@ -50,15 +59,16 @@ function addCustomTag(e) {
 function createTagElements(ul) {
   var badgeIds = [];
 
-  for (var tag of DEFAULTTAGS) {
+  for (var tag of TAGS) {
     var li = document.createElement("li");
     var badgeId = tag + "CustomTag";
     badgeIds.push(badgeId);
 
     li.setAttribute("id", badgeId + "List");
+    li.setAttribute("class", "tagListItem");
     li.innerHTML = `
       <div class="badgeDiv">
-        <img class="badgeListImg" id=${badgeId + "Img"} src=${"../img/addIcon.png"}></img>
+        <img class="badgeListImg" id=${badgeId + "Img"} src=${ADDICON}></img>
         <span class="badge badge-pill badge-success custom-tag" id=${badgeId}>
         ${tag}
         </span>
@@ -70,11 +80,66 @@ function createTagElements(ul) {
   return badgeIds;
 }
 
+function addTag(e) {
+  e.preventDefault();
+
+  let newTag = NEWTAGINPUT.value;
+  if(newTag == "" || TAGS.indexOf(newTag) >= 0) { 
+    NEWTAGINPUT.value = "";
+    return; 
+  }
+
+  var li = document.createElement("li");
+  var badgeId = newTag + "CustomTag";
+
+  li.setAttribute("id", badgeId + "List");
+  li.innerHTML = `
+    <div class="badgeDiv">
+      <img class="badgeListImg" id=${badgeId + "Img"} src=${REMOVEICON}></img>
+      <span class="badge badge-pill badge-success custom-tag" id=${badgeId}>
+      ${newTag}
+      </span>
+    </div>
+  `;
+
+  CUSTOMADDEDLIST.appendChild(li);
+  // TODO: post the updated tag to API
+  TAGS.push(newTag);
+
+  NEWTAGINPUT.value = "";
+  document.getElementById(badgeId).addEventListener("click", function (e) { addCustomTag(e); });
+  document.getElementById(badgeId + "Img").addEventListener("click", function (e) { addCustomTag(e); });
+
+}
+
+function resetFormFields() {
+  WORDINPUTELE.value = "";
+  DEFINITIONINPUTELE.value = "";
+  EXPLANATIONINPUTELE.value = "";
+  EXAMPLEINPUTELE.value = "";
+  CONFIDENCEARANGE.value = 3;
+  PICTUREINPUTELE.value = "";
+
+  while(CUSTOMADDEDLIST.childNodes.length > 0) {
+    var c = CUSTOMADDEDLIST.childNodes[0];
+    var id = c.id;
+    var imgElement = document.getElementById(id.substring(0, id.indexOf("List")) + "Img");
+    imgElement.setAttribute("src", ADDICON);
+    CUSTOMINVLIST.appendChild(c);
+  }
+
+  REQUIREFIELDNOTICE.setAttribute("style", "display: none");
+}
+
 function addWord(e) {
   e.preventDefault();
 
   // TODO: update source after implementing right click to add word
   const source = "manual";
+  if(WORDINPUTELE.value == "") {
+    REQUIREFIELDNOTICE.setAttribute("style", "display: inline");
+    return;
+  }
   const confidenceLevel = CONFIDENCEARANGE.value;
   var customTags = [];
 
@@ -90,8 +155,11 @@ function addWord(e) {
     "example": EXAMPLEINPUTELE.value,
     "source": source,
     "confidenceLevel": confidenceLevel,
+    "picture": PICTUREINPUTELE.value,
     "customTags": customTags
   }
+
+  resetFormFields();
   console.log('about to send to API');
   console.log(JSON.stringify(response))
 
@@ -113,7 +181,7 @@ function addWord(e) {
 }
 
 export {
-  DEFAULTTAGS, WORDINPUTELE, DEFINITIONINPUTELE, EXPLANATIONINPUTELE, EXAMPLEINPUTELE,
-  CONFIDENCEARANGE, CUSTOMADDEDLIST, CUSTOMINVLIST,
+  TAGS, WORDINPUTELE, DEFINITIONINPUTELE, EXPLANATIONINPUTELE, EXAMPLEINPUTELE, PICTUREINPUTELE,
+  CONFIDENCEARANGE, CUSTOMADDEDLIST, CUSTOMINVLIST, REQUIREFIELDNOTICE,
   onLoad, addCustomTag, createTagElements, addWord
 };

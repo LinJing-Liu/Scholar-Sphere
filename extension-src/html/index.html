@@ -13,8 +13,9 @@
   <h1 id="extensionTitle">Scholar Sphere</h1>
   <form id="extensionForm">
     <h2 id="formTitle">Add Word</h2>
+    <i class="smallLabel">All fields marked by * are required.</i>
     <div class="form-group">
-      <label for="wordInput">Word</label>
+      <label for="wordInput">Word*</label>
       <input class="form-control" id="wordInput" placeholder="Enter word">
     </div>
     <div class="form-group">
@@ -30,7 +31,8 @@
       <textarea class="form-control" id="exampleInput" placeholder="Enter example"></textarea>
     </div>
     <div class="form-group">
-      <label for="pictureInput">Picture</label>
+      <label for="pictureInput">Picture Url</label>
+      <input class="form-control" id="urlInput" placeholder="Enter url">
     </div>
     <div class="form-group">
       <label>Confidence Level</label>
@@ -40,11 +42,16 @@
     </div>
     <div class="form-group">
       <label>Custom Tags</label>
+      <div id="addTagInputGroup">
+        <input class="form-control" id="newTagInput" placeholder="Enter new tag">
+        <button class="btn btn-primary" id="addTagButton">Add</button>
+      </div>
       <div id="customTagContainer">
         <ul id="customTagAdded"></ul>
       </div>
       <ul id="customTagList"></ul>
     </div>
+    <i class="smallLabel" id="requireFieldNotice">All required fields must not be empty.</i>
     <button type="submit" class="btn btn-primary" id="addWordButton">Submit</button>
   </form>
 </body>

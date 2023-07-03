@@ -10,7 +10,7 @@ chrome.contextMenus.onClicked.addListener(function (clickData) {
     chrome.tabs.query(
         { currentWindow: true, active: true },
         function (tabArray) {
-            chrome.tabs.sendMessage(tabArray[0].id, { type: "addWord", word: clickData.selectionText });
+            chrome.tabs.sendMessage(tabArray[0].id, { type: "addWord", word: clickData.selectionText});
         }
     );
 });
