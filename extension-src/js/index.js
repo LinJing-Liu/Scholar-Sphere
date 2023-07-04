@@ -1,6 +1,3 @@
-// TODO: update tags with data from API
-const TAGS = ["cs", "math", "english", "science"];
-
 const ADDICON = chrome.runtime.getURL("img/addIcon.png");
 const REMOVEICON = chrome.runtime.getURL("img/removeIcon.png");
 
@@ -30,6 +27,7 @@ var WORDINPUTELE, DEFINITIONINPUTELE, EXPLANATIONINPUTELE, EXAMPLEINPUTELE, CONF
 var CUSTOMADDEDLIST, CUSTOMINVLIST, REQUIREFIELDNOTICE, NEWTAGINPUT;
 
 var fromPopup = false;
+var tags = [];
 
 document.addEventListener("DOMContentLoaded", function () {
   onLoad(true);
@@ -49,15 +47,30 @@ function onLoad(b) {
   CUSTOMINVLIST = document.getElementById("customTagList");
   REQUIREFIELDNOTICE = document.getElementById("requireFieldNotice");
   NEWTAGINPUT = document.getElementById("newTagInput");
-
-  const BADGEIDS = createTagElements(CUSTOMINVLIST);
-  for (var id of BADGEIDS) {
-    document.getElementById(id).addEventListener("click", function (e) { addCustomTag(e); });
-    document.getElementById(id + "Img").addEventListener("click", function (e) { addCustomTag(e); });
-  }
   
   document.getElementById("addTagButton").addEventListener("click", addTag);
   document.getElementById("addWordButton").addEventListener("click", addWord);
+
+  getTags();
+}
+
+function getTags() {
+  fetch("http://localhost:5000/api/tag", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Handle the response from the server
+      console.log("Response:", data);
+      tags = data.tag;
+      createTagElements(CUSTOMINVLIST);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 function addCustomTag(e) {
@@ -85,7 +98,7 @@ function addCustomTag(e) {
 function createTagElements(ul) {
   var badgeIds = [];
 
-  for (var tag of TAGS) {
+  for (var tag of tags) {
     var li = document.createElement("li");
     var badgeId = tag + "CustomTag";
     badgeIds.push(badgeId);
@@ -103,14 +116,17 @@ function createTagElements(ul) {
     ul.appendChild(li);
   }
 
-  return badgeIds;
+  for (var id of badgeIds) {
+    document.getElementById(id).addEventListener("click", function (e) { addCustomTag(e); });
+    document.getElementById(id + "Img").addEventListener("click", function (e) { addCustomTag(e); });
+  }
 }
 
 function addTag(e) {
   e.preventDefault();
 
   let newTag = NEWTAGINPUT.value;
-  if(newTag == "" || TAGS.indexOf(newTag) >= 0) { 
+  if(newTag == "" || tags.indexOf(newTag) >= 0) { 
     NEWTAGINPUT.value = "";
     return; 
   }
@@ -147,8 +163,22 @@ function addTag(e) {
     span.setAttribute("style", customTagStyle);
   }
 
-  // TODO: post the updated tag to API
-  TAGS.push(newTag);
+  tags.push(newTag);
+  fetch("http://localhost:5000/api/tag", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({tag: newTag}),
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Handle the response from the server
+      console.log("Response:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 
   NEWTAGINPUT.value = "";
   document.getElementById(badgeId).addEventListener("click", function (e) { addCustomTag(e); });
@@ -178,7 +208,6 @@ function resetFormFields() {
 function addWord(e) {
   e.preventDefault();
 
-  // TODO: update source after implementing right click to add word
   const source = fromPopup ? "manual" : "automatic";
   if(WORDINPUTELE.value == "") {
     REQUIREFIELDNOTICE.setAttribute("style", "display: inline");
@@ -203,7 +232,9 @@ function addWord(e) {
     "customTags": customTags
   }
 
-  resetFormFields();
+  if (fromPopup) {
+    resetFormFields();
+  }
   console.log('about to send to API');
   console.log(JSON.stringify(response))
 
@@ -225,7 +256,7 @@ function addWord(e) {
 }
 
 export {
-  TAGS, WORDINPUTELE, DEFINITIONINPUTELE, EXPLANATIONINPUTELE, EXAMPLEINPUTELE, PICTUREINPUTELE,
+  tags, WORDINPUTELE, DEFINITIONINPUTELE, EXPLANATIONINPUTELE, EXAMPLEINPUTELE, PICTUREINPUTELE,
   CONFIDENCEARANGE, CUSTOMADDEDLIST, CUSTOMINVLIST, REQUIREFIELDNOTICE,
   customTagStyle, badgeImageStyle, badgeDivStyle, tagListStyle,
   onLoad, addCustomTag, createTagElements, addWord
