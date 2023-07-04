@@ -57,31 +57,10 @@ const confidenceRangeStyle = `
   margin-bottom: 0;
   padding-bottom: 0px;
 `
-const customTagStyle = `
-  background-color: #5819f7 !important;
-  padding: 5px;
-  color: white;
-  border-radius: 5px 7px;
-`
-const badgeImageStyle = `
-  max-width: 20px !important;
-`
 const tagSectionStyle = `
   list-style-type: none;
   margin: 0px;
   padding: 0px;
-`
-const tagListStyle = `
-  display: inline;
-  margin: 0px;
-  padding: 0px;
-  padding-right: 15px;
-`
-const badgeDivStyle = `
-  display: inline-block;
-  margin: 0px;
-  padding: 0px;
-  padding-top: 8px;
 `
 const tagContainerStyle = `
   background-color: #dbdff9;
@@ -94,12 +73,13 @@ const tagContainerStyle = `
 const addWordButtonStyle = `
   font-size: medium;
   background-color: #4066e0;
-  padding: 5px 20px;
+  padding: 7px 20px;
   border-radius: 10px;
   margin-top: 5px;
-  margin-left: 35%;
   color: white;
   border: none;
+  display: inline;
+  margin-left: 20px;
 `
 const addTagButtonStyle = `
   padding: 0;
@@ -109,6 +89,18 @@ const addTagButtonStyle = `
   background-color: #4066e0;
   color: white;
   border: none;
+  border-radius: 10px;
+`
+const closeDialogButtonStyle = `
+  font-size: medium;
+  background-color: #f5f5f5;
+  padding: 5px 20px;
+  border-radius: 10px;
+  margin-top: 5px;
+  margin-left: 15px;
+  color: #3d3c3a;
+  border: 1px solid #3d3c3a;
+  display: inline;
 `
 const addTagGroupStyle = `
   display: flex;
@@ -171,9 +163,10 @@ const modalHTML = `
     <i class="smallLabel" id="requireFieldNotice">All required fields must not be empty.</i>
     <br />
     <button type="submit" class="btn btn-primary" id="addWordButton">Submit</button>
+    <button class="btn btn-primary" id="closeDialogButton">Cancel</button>
 </form>`;
 
-function addStyle() {
+function addStyle(index) {
   document.getElementById("extensionForm").setAttribute("style", formStyle);
   document.getElementById("formTitle").setAttribute("style", formTitleStyle);
   document.getElementById("requireFieldNotice").setAttribute("style", requiredFieldNoticeStyle);
@@ -183,22 +176,23 @@ function addStyle() {
   document.getElementById("customTagContainer").setAttribute("style", tagContainerStyle);
   document.getElementById("addWordButton").setAttribute("style", addWordButtonStyle);
   document.getElementById("addTagButton").setAttribute("style", addTagButtonStyle);
+  document.getElementById("closeDialogButton").setAttribute("style", closeDialogButtonStyle);
   document.getElementById("addTagInputGroup").setAttribute("style", addTagGroupStyle);
   document.getElementById("newTagInput").setAttribute("style", addTagInputStyle);
 
   const customTag = document.getElementsByClassName("custom-tag");
   for(c of customTag) {
-    c.setAttribute("style", customTagStyle);
+    c.setAttribute("style", index.customTagStyle);
   }
 
   const badgeListImg = document.getElementsByClassName("badgeListImg");
   for(c of badgeListImg) {
-    c.setAttribute("style", badgeImageStyle);
+    c.setAttribute("style", index.badgeImageStyle);
   }
 
   const badgeDiv = document.getElementsByClassName("badgeDiv");
   for(c of badgeDiv) {
-    c.setAttribute("style", badgeDivStyle);
+    c.setAttribute("style", index.badgeDivStyle);
   }
 
   const customFormControl = document.getElementsByClassName("custom-form-control");
@@ -218,7 +212,7 @@ function addStyle() {
 
   const tagListItem = document.getElementsByClassName("tagListItem");
   for(c of tagListItem) {
-    c.setAttribute("style", tagListStyle);
+    c.setAttribute("style", index.tagListStyle);
   }
 }
 
@@ -238,8 +232,8 @@ function showAddWordModal(index, word) {
     }
   });
 
-  index.onLoad();
-  addStyle();
+  index.onLoad(false);
+  addStyle(index);
 }
 
 (async () => {

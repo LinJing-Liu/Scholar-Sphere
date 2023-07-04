@@ -4,14 +4,40 @@ const TAGS = ["cs", "math", "english", "science"];
 const ADDICON = chrome.runtime.getURL("img/addIcon.png");
 const REMOVEICON = chrome.runtime.getURL("img/removeIcon.png");
 
+const customTagStyle = `
+  background-color: #5819f7 !important;
+  padding: 6px;
+  color: white;
+  border-radius: 5px 7px;
+`
+const badgeImageStyle = `
+  max-width: 20px !important;
+`
+const badgeDivStyle = `
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  padding-top: 8px;
+`
+const tagListStyle = `
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+  padding-right: 15px;
+`
+
 var WORDINPUTELE, DEFINITIONINPUTELE, EXPLANATIONINPUTELE, EXAMPLEINPUTELE, CONFIDENCEARANGE, PICTUREINPUTELE;
 var CUSTOMADDEDLIST, CUSTOMINVLIST, REQUIREFIELDNOTICE, NEWTAGINPUT;
 
+var fromPopup = false;
+
 document.addEventListener("DOMContentLoaded", function () {
-  onLoad();
+  onLoad(true);
 });
 
-function onLoad() {
+function onLoad(b) {
+  fromPopup = b;
+
   // initialize add word form elements
   WORDINPUTELE = document.getElementById("wordInput");
   DEFINITIONINPUTELE = document.getElementById("definitionInput");
@@ -89,20 +115,38 @@ function addTag(e) {
     return; 
   }
 
-  var li = document.createElement("li");
   var badgeId = newTag + "CustomTag";
-
+  var li = document.createElement("li");
   li.setAttribute("id", badgeId + "List");
-  li.innerHTML = `
-    <div class="badgeDiv">
-      <img class="badgeListImg" id=${badgeId + "Img"} src=${REMOVEICON}></img>
-      <span class="badge badge-pill badge-success custom-tag" id=${badgeId}>
-      ${newTag}
-      </span>
-    </div>
-  `;
+  li.setAttribute("class", "tagListItem");
+  li.setAttribute("style", tagListStyle);
 
+  var div = document.createElement("div");
+  div.setAttribute("class", "badgeDiv");
+
+  var img = document.createElement("img");
+  img.setAttribute("class", "badgeListImg");
+  img.setAttribute("id", badgeId + "Img");
+  img.setAttribute("src", REMOVEICON);
+
+  var span = document.createElement("span");
+  span.setAttribute("class", "badge badge-pill badge-success custom-tag");
+  span.setAttribute("id", badgeId);
+  span.innerHTML = newTag;
+
+  li.appendChild(div);
+  div.appendChild(img);
+  div.appendChild(span);
   CUSTOMADDEDLIST.appendChild(li);
+
+  if (!fromPopup) {
+    console.log("not from popup");
+    li.setAttribute("style", tagListStyle);
+    div.setAttribute("style", badgeDivStyle);
+    img.setAttribute("style", badgeImageStyle);
+    span.setAttribute("style", customTagStyle);
+  }
+
   // TODO: post the updated tag to API
   TAGS.push(newTag);
 
@@ -135,7 +179,7 @@ function addWord(e) {
   e.preventDefault();
 
   // TODO: update source after implementing right click to add word
-  const source = "manual";
+  const source = fromPopup ? "manual" : "automatic";
   if(WORDINPUTELE.value == "") {
     REQUIREFIELDNOTICE.setAttribute("style", "display: inline");
     return;
@@ -183,5 +227,6 @@ function addWord(e) {
 export {
   TAGS, WORDINPUTELE, DEFINITIONINPUTELE, EXPLANATIONINPUTELE, EXAMPLEINPUTELE, PICTUREINPUTELE,
   CONFIDENCEARANGE, CUSTOMADDEDLIST, CUSTOMINVLIST, REQUIREFIELDNOTICE,
+  customTagStyle, badgeImageStyle, badgeDivStyle, tagListStyle,
   onLoad, addCustomTag, createTagElements, addWord
 };
