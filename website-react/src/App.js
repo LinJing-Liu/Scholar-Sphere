@@ -8,6 +8,7 @@ import WordListPage from './WordListPage.js';
 import GamePage from './GamePage.js';
 import StatisticsPage from './StatisticsPage.js';
 import Navbar from './NavigationBar';
+import TagDisplay from './TagDisplay.js';
 
 function App() {
   //   <Router>
@@ -22,6 +23,15 @@ function App() {
   const [words, setWords] = useState(() => {
     const savedWords = localStorage.getItem("words");
     return savedWords ? JSON.parse(savedWords) : [];
+  });
+
+  const [tags, setTags] = useState(() => {
+    var savedTags = localStorage.getItem("tags");
+    savedTags = savedTags ? JSON.parse(savedTags) : [];
+    const socket = io('http://localhost:5000');
+    socket.emit("sync tag", { savedTags });
+
+    return savedTags;
   });
 
   const handleUpdateWord = (updatedWord, index) => {
@@ -42,26 +52,29 @@ function App() {
     <div className="App">
       <body className="App-body">
         <FixedNavButtons />
-        <InputListener words={words} setWords={setWords} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} />
+        <InputListener words={words} setWords={setWords} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} 
+        tags={tags} setTags={setTags} />
       </body>
     </div>
   );
 }
 
 
-const InputListener = ({ words, setWords, onUpdateWord, onDeleteWord }) => {
+const InputListener = ({ words, setWords, onUpdateWord, onDeleteWord, tags, setTags }) => {
   useEffect(() => {
     const socket = io('http://localhost:5000');
 
-    socket.on('new word', (input_word, input_definition, input_explanation, input_example, input_tag) => {
+    socket.on('new word', (input_word, input_definition, input_explanation, input_example, input_source, input_confidence_level, input_picture, input_tag) => {
       setWords(prevWords => {
         const newWords = [...prevWords, {
           word: input_word,
           definition: input_definition,
           explanation: input_explanation,
           example: input_example,
+          source: input_source,
+          confidence: input_confidence_level,
+          picture: input_picture,
           tag: input_tag
-          //didn't implement parsing tags yet
         }];
 
         // Save the new words array to localStorage
@@ -75,11 +88,31 @@ const InputListener = ({ words, setWords, onUpdateWord, onDeleteWord }) => {
       socket.disconnect();
     };
   }, [setWords]);
+
+  useEffect(() => {
+    const socket = io("http://localhost:5000");
+
+    socket.on("new tag", (tag) => {
+      setTags(prevTags => {
+        const newTags = [...prevTags, tag];
+        localStorage.setItem("tags", JSON.stringify(newTags));
+        return newTags;
+      });
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [setTags]);
+
   return (
     <div>
 
       <div id="home-page-container">
         <HomePage />
+      </div>
+      <div id="tmp-tag-display">
+        <TagDisplay tags={tags}/>
       </div>
       <div id="flash-card-page-container">
         <FlashCardPage words={words}></FlashCardPage>

@@ -1,7 +1,116 @@
 body {
-  margin: 20px;
-  min-width: 300px;
+  min-width: 350px;
+  color: black;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+#extensionTitle {
+  padding: 15px 15px;
+  margin: 0;
+  background-color: #7144da;
+  color: white;
+  font-weight: 200;
+  font-size: larger;
+  text-align: center;
+}
+#extensionForm {
+  margin: 0;
+  padding: 15px 20px;
+  background-color: #f5f5f5;
+  padding-bottom: 25px;
+}
+#formTitle {
+  font-weight: 200;
+  font-size: large;
+}
+.smallLabel {
+  font-size: small;
+}
+#requireFieldNotice {
+  display: none;
+  width: 50%;
+  margin-left: 10%;
+}
+#extensionForm .form-group {
+  padding-bottom: 10px;
+}
+#extensionForm label {
+  font-size: medium;
+}
+#extensionForm input, #extensionForm textarea {
+  padding: 5px 8px;
+  margin: 0;
+  font-size: small;
+}
+#confidenceRangeInput {
+  margin-bottom: 0;
+  padding-bottom: 0px;
+}
+#lowerRange {
+  margin-left: 20px;
+  margin-top: 0px;
+  padding-top: 0px;
+}
+#upperRange {
+  float: right;
+  margin-right: 20px;
+  margin-top: 0;
+  padding-top: 0;
 }
 .custom-tag {
-  background-color: blue;
+  background-color: #5819f7;
+}
+.badgeListImg {
+  max-width: 20px;
+}
+#customTagAdded, #customTagList {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+#customTagAdded li, #customTagList li {
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+  padding-right: 15px;
+}
+.badgeDiv {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  padding-top: 8px;
+}
+#customTagContainer {
+  background-color: #dbdff9;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border-radius: 15px;
+  padding: 10px;
+  padding-bottom: 15px;
+}
+#addWordButton {
+  font-size: medium;
+  background-color: #4066e0;
+  padding: 5px 20px;
+  border-radius: 10px;
+  margin-top: 5px;
+  margin-left: 35%;
+}
+#addTagInputGroup {
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+#newTagInput {
+  width: 80%;
+  padding: 0;
+  margin: 0;
+  display: inline;
+  padding: 5px 8px;
+  font-size: small;
+}
+#addTagButton {
+  padding: 0;
+  padding: 0px 10px;
+  margin-left: 10px;
+  display: inline;
 }
