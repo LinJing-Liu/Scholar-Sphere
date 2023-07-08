@@ -85,7 +85,7 @@ function TypeWord({ words }) {
 
 const generateCrosswordLayoutSkeleton = (words) => {
   const randomWords = words.words.slice().sort(() => 0.5 - Math.random());
-  const selectedWords = randomWords.slice(0, 2);
+  const selectedWords = randomWords.slice(0, 10);
 
   const input_json = selectedWords.map(word => ({ answer: word.word, clue: word.definition }));
   const layout = clg.generateLayout(input_json);
