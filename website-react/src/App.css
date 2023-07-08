@@ -204,8 +204,22 @@ flashcards
 /*
 game page
 */
+.cell {
+  border: 1px solid #000;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.cell-black {
+  background-color: black;
+}
 
+.cell-white {
+  background-color: white;
+}
 
 /*
 homepage
