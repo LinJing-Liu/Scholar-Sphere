@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
+
 import io from 'socket.io-client';
 import DOMPurify from "dompurify";
+
+import Navbar from './NavigationBar';
+import '../css/WordListPage.css';
 
 const WordListPage = ({ words, onUpdateWord, onDeleteWord }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,6 +23,7 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord }) => {
 
   return (
     <div>
+      <Navbar />
       Start WordListPage
       <h1>My word list: </h1>
       <input

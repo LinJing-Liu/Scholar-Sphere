@@ -1,0 +1,45 @@
+.App {
+  text-align: center;
+  margin-top: 40px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.App-header {
+  background-color: #A7ED6E;
+  min-height: 5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(8px + 2vmin);
+  color: #376d07;
+}
+
+#home-page-container,
+#flash-card-page-container,
+#word-list-page-container,
+#game-page-container,
+#statistics-page-container {
+  padding-top: 40px;
+  /* adjust this value according to the height of your fixed nav */
+  margin-top: -40px;
+  /* should be equal to padding-top */
+  background-color: coral;
+}
+
+
+.word {
+  color: blue;
+  border: '1px solid black';
+  padding: '20px';
+  margin: '20px'
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0
+}

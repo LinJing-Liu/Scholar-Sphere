@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
+
 import io from 'socket.io-client';
-import './App.js';
+
+import '../css/FlashCardPage.css';
 
 const FlashCardPage = ({ words }) => {
-  return <div>
+  return <div id="flash-card-page-container">
     Start FlashCardPage
     <FlashCards words={words}></FlashCards>
     End FlashCardPage

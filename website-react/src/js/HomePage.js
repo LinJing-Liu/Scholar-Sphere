@@ -1,9 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
-import './App.css';
 import { HashLink as Link } from 'react-router-hash-link';
 
-const HomePage = () => {
+import Navbar from './NavigationBar';
+import FlashCardPage from './FlashCardPage.js';
+import '../css/HomePage.css';
+
+const HomePage = ({ words }) => {
   return <div>
+    <Navbar />
     Start HomePage
     <div className='welcome-wrapper'>
       <Welcome />
@@ -11,6 +15,8 @@ const HomePage = () => {
     </div>
     <div className="arrow"></div>
     End HomePage
+
+    <FlashCardPage words={words}></FlashCardPage>
   </div>;
 };
 
