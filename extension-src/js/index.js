@@ -99,28 +99,9 @@ function createTagElements(ul) {
   var badgeIds = [];
 
   for (var tag of tags) {
-    // var li = document.createElement("li");
-    // var badgeId = tag + "CustomTag";
-    // badgeIds.push(badgeId);
-
-    // li.setAttribute("id", badgeId + "List");
-    // li.setAttribute("class", "tagListItem");
-    // li.innerHTML = `
-    //   <div class="badgeDiv">
-    //     <img class="badgeListImg" id=${badgeId + "Img"} src=${ADDICON}></img>
-    //     <span class="badge badge-pill badge-success custom-tag" id=${badgeId}>
-    //     ${tag}
-    //     </span>
-    //   </div>
-    // `;
-    // ul.appendChild(li);
     badgeIds.push(createSingleTag(tag, ul, ADDICON));
   }
 
-  // for (var id of badgeIds) {
-  //   document.getElementById(id).addEventListener("click", function (e) { addCustomTag(e); });
-  //   document.getElementById(id + "Img").addEventListener("click", function (e) { addCustomTag(e); });
-  // }
 }
 
 function createSingleTag(tag, parentElement, icon) {

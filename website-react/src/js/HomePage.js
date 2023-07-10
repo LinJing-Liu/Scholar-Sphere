@@ -6,18 +6,18 @@ import FlashCardPage from './FlashCardPage.js';
 import '../css/HomePage.css';
 
 const HomePage = ({ words }) => {
-  return <div>
-    <Navbar />
-    Start HomePage
-    <div className='welcome-wrapper'>
-      <Welcome />
-
+  return (
+    <div>
+      <Navbar />
+      <div id="hero">
+        <div className='welcome-wrapper'>
+          <Welcome />
+        </div>
+        <div className="arrow"></div>
+      </div>
+      <FlashCardPage words={words}></FlashCardPage>
     </div>
-    <div className="arrow"></div>
-    End HomePage
-
-    <FlashCardPage words={words}></FlashCardPage>
-  </div>;
+  );
 };
 
 
@@ -27,7 +27,6 @@ function Welcome() {
     <div className='welcome'>
       <h1>Welcome</h1>
       <p>Let's start studying!</p>
-
     </div>
   )
 }

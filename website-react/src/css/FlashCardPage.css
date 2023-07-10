@@ -1,3 +1,16 @@
+#flash-card-page-container {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 5rem 1rem;
+    background-color: #fffdf5;
+}
+#flashcardsHeading {
+    display: block;
+    font-size: 3rem;
+    font-weight: 300;
+    margin-left: 5rem;
+    text-align: left;
+    color: #f08377;
+}
 .flashcard-container {
     display: flex;
     justify-content: center;

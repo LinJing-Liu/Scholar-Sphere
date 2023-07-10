@@ -8,7 +8,6 @@ import FlashCardPage from './FlashCardPage.js'; // Assume your Home component is
 import WordListPage from './WordListPage.js';
 import GamePage from './GamePage.js';
 import StatisticsPage from './StatisticsPage.js';
-import TagDisplay from './TagDisplay.js';
 import '../css/App.css';
 
 function App() {
@@ -89,7 +88,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route exact path="/" element={<HomePage words={words} />} />
-            <Route exact path="/word-list" element={<WordListPage words={words} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} />} />
+            <Route exact path="/word-list" element={<WordListPage words={words} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} tags={tags} />} />
             <Route exact path="/games" element={<GamePage words={words} />} />
             <Route exact path="/statistics" element={<StatisticsPage />} />
           </Routes>
@@ -153,9 +152,6 @@ const InputListener = ({ words, setWords, onUpdateWord, onDeleteWord, tags, setT
 
       <div id="home-page-container">
         <HomePage />
-      </div>
-      <div id="tmp-tag-display">
-        <TagDisplay tags={tags}/>
       </div>
       <div id="flash-card-page-container">
         <FlashCardPage words={words}></FlashCardPage>

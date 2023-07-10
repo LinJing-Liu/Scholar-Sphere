@@ -3,7 +3,8 @@
     justify-content: space-between;
     padding: 1.5em 0;
     /* Increased vertical padding, removed horizontal padding */
-    background-color: #333;
+    background-color: #8fcaca;
+    font-size: medium;
 } 
 .navbar-left,
 .navbar-right {
@@ -11,19 +12,35 @@
     align-items: center;
 } 
 .navbar-left {
+    margin-left: 40px;
     margin-right: auto;
     /* Added margin-right: auto to push navbar-left to the left side */
 }  
 .navbar-right {
     display: flex;
     align-items: center;
-}  
+    padding-right: 40px;
+}
+.navbar-left a {
+    text-decoration: none;
+    color: #417676;
+    font-size: large;
+    font-weight: 500;
+}
+.navbar-left a:hover {
+    color: white;
+}
 .navbar-right a,
 .navbar-right Link {
-    margin-left: 20px;
-    color: rgb(255, 255, 255);
+    margin-left: 25px;
+    color: #ffffff;
     text-decoration: none;
 } 
+.navbar-right a:hover {
+    color: #417676;
+}
+
+/* applies to old version of navigation bar */
 .fixed-nav-buttons {
     position: fixed;
     top: 0;

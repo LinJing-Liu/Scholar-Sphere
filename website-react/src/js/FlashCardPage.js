@@ -6,9 +6,7 @@ import '../css/FlashCardPage.css';
 
 const FlashCardPage = ({ words }) => {
   return <div id="flash-card-page-container">
-    Start FlashCardPage
     <FlashCards words={words}></FlashCards>
-    End FlashCardPage
   </div>;
 };
 
@@ -44,7 +42,7 @@ function FlashCards({ words }) {
 
   return (
     <div>
-      <h1>Flashcards:</h1>
+      <h1 id="flashcardsHeading">Flashcards</h1>
       <FlashCard data={currentCard} />
       <p>
         {currentIndex + 1} out of {words.length}
