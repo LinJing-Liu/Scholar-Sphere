@@ -114,6 +114,7 @@ const CrosswordSkeleton = ({ words }) => {
   const [winner, setWinner] = useState(false);
   const [wordIndexes, setWordIndexes] = useState([]);
   const inputRefs = useRef([]);
+  const [previousSquare, setPreviousSquare] = useState({ row: null, col: null });
 
   useEffect(() => {
     const { table, clues, wordIndexes } = generateCrosswordLayoutSkeleton({ words });
@@ -123,12 +124,22 @@ const CrosswordSkeleton = ({ words }) => {
     const initialInput = table.map(row => row.map(cell => ''));
     setUserInput(initialInput);
   }, []);
-
+  const handleKeyDown = (rowIndex, colIndex, e) => {
+    if (e.key === 'ArrowUp' && rowIndex - 1 >= 0 && crosswordTable[rowIndex - 1][colIndex] !== '-') {
+      inputRefs.current[rowIndex - 1][colIndex].focus();
+    } else if (e.key === 'ArrowDown' && rowIndex + 1 < crosswordTable.length && crosswordTable[rowIndex + 1][colIndex] !== '-') {
+      inputRefs.current[rowIndex + 1][colIndex].focus();
+    } else if (e.key === 'ArrowLeft' && colIndex - 1 >= 0 && crosswordTable[rowIndex][colIndex - 1] !== '-') {
+      inputRefs.current[rowIndex][colIndex - 1].focus();
+    } else if (e.key === 'ArrowRight' && colIndex + 1 < crosswordTable[rowIndex].length && crosswordTable[rowIndex][colIndex + 1] !== '-') {
+      inputRefs.current[rowIndex][colIndex + 1].focus();
+    }
+  };
   const handleInputChange = (rowIndex, colIndex, e) => {
-    console.log(e.target.value)
+    const inputValue = e.target.value;
     const newInput = userInput.map((row, i) =>
       i !== rowIndex ? row : row.map((cell, j) =>
-        j !== colIndex ? cell : e.target.value[e.target.value.length - 1].toUpperCase()
+        j !== colIndex ? cell : inputValue ? inputValue[inputValue.length - 1].toUpperCase() : ''
       )
     );
     setUserInput(newInput);
@@ -143,16 +154,24 @@ const CrosswordSkeleton = ({ words }) => {
     ) {
       setWinner(true);
     }
-    moveToNextInput(rowIndex, colIndex);
+    if (inputValue) {
+      // Only move to next input if a character was added
+      moveToNextInput(rowIndex, colIndex);
+    }
+    setPreviousSquare({ row: rowIndex, col: colIndex });
   };
 
   const moveToNextInput = (rowIndex, colIndex) => {
-    // check if there's a valid next cell in the current row
-    if (colIndex + 1 < crosswordTable[rowIndex].length && crosswordTable[rowIndex][colIndex + 1] !== '-') {
-      inputRefs.current[rowIndex][colIndex + 1].focus();
-    } else {
-      // if not, go to the cell directly below
+    if (previousSquare.row === rowIndex - 1 && previousSquare.col === colIndex) {
+      // If the previous cell was directly above, move down
       if (rowIndex + 1 < crosswordTable.length && crosswordTable[rowIndex + 1][colIndex] !== '-') {
+        inputRefs.current[rowIndex + 1][colIndex].focus();
+      }
+    } else {
+      // Otherwise, continue as before
+      if (colIndex + 1 < crosswordTable[rowIndex].length && crosswordTable[rowIndex][colIndex + 1] !== '-') {
+        inputRefs.current[rowIndex][colIndex + 1].focus();
+      } else if (rowIndex + 1 < crosswordTable.length && crosswordTable[rowIndex + 1][colIndex] !== '-') {
         inputRefs.current[rowIndex + 1][colIndex].focus();
       }
     }
@@ -178,8 +197,8 @@ const CrosswordSkeleton = ({ words }) => {
                     value={userInput[rowIndex][colIndex] || ''}
                     maxLength={2}
                     onChange={(e) => handleInputChange(rowIndex, colIndex, e)}
+                    onKeyDown={(e) => handleKeyDown(rowIndex, colIndex, e)}
                     ref={(el) => {
-
                       if (!inputRefs.current[rowIndex]) {
                         inputRefs.current[rowIndex] = [];
                       }
