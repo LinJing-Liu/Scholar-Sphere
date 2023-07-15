@@ -99,39 +99,13 @@ function createTagElements(ul) {
   var badgeIds = [];
 
   for (var tag of tags) {
-    var li = document.createElement("li");
-    var badgeId = tag + "CustomTag";
-    badgeIds.push(badgeId);
-
-    li.setAttribute("id", badgeId + "List");
-    li.setAttribute("class", "tagListItem");
-    li.innerHTML = `
-      <div class="badgeDiv">
-        <img class="badgeListImg" id=${badgeId + "Img"} src=${ADDICON}></img>
-        <span class="badge badge-pill badge-success custom-tag" id=${badgeId}>
-        ${tag}
-        </span>
-      </div>
-    `;
-    ul.appendChild(li);
+    badgeIds.push(createSingleTag(tag, ul, ADDICON));
   }
 
-  for (var id of badgeIds) {
-    document.getElementById(id).addEventListener("click", function (e) { addCustomTag(e); });
-    document.getElementById(id + "Img").addEventListener("click", function (e) { addCustomTag(e); });
-  }
 }
 
-function addTag(e) {
-  e.preventDefault();
-
-  let newTag = NEWTAGINPUT.value;
-  if(newTag == "" || tags.indexOf(newTag) >= 0) { 
-    NEWTAGINPUT.value = "";
-    return; 
-  }
-
-  var badgeId = newTag + "CustomTag";
+function createSingleTag(tag, parentElement, icon) {
+  var badgeId = tag + "CustomTag";
   var li = document.createElement("li");
   li.setAttribute("id", badgeId + "List");
   li.setAttribute("class", "tagListItem");
@@ -143,17 +117,19 @@ function addTag(e) {
   var img = document.createElement("img");
   img.setAttribute("class", "badgeListImg");
   img.setAttribute("id", badgeId + "Img");
-  img.setAttribute("src", REMOVEICON);
+  img.setAttribute("src", icon);
+  img.addEventListener("click", function (e) { addCustomTag(e); });
 
   var span = document.createElement("span");
   span.setAttribute("class", "badge badge-pill badge-success custom-tag");
   span.setAttribute("id", badgeId);
-  span.innerHTML = newTag;
+  span.addEventListener("click", function (e) { addCustomTag(e); });
+  span.innerHTML = tag;
 
   li.appendChild(div);
   div.appendChild(img);
   div.appendChild(span);
-  CUSTOMADDEDLIST.appendChild(li);
+  parentElement.appendChild(li);
 
   if (!fromPopup) {
     console.log("not from popup");
@@ -163,7 +139,22 @@ function addTag(e) {
     span.setAttribute("style", customTagStyle);
   }
 
+  return badgeId;
+}
+
+function addTag(e) {
+  e.preventDefault();
+
+  let newTag = NEWTAGINPUT.value;
+  if(newTag == "" || tags.indexOf(newTag) >= 0) { 
+    NEWTAGINPUT.value = "";
+    return; 
+  }
+
+  createSingleTag(newTag, CUSTOMADDEDLIST, REMOVEICON);
   tags.push(newTag);
+  NEWTAGINPUT.value = "";
+
   fetch("http://localhost:5000/api/tag", {
     method: "POST",
     headers: {
@@ -179,10 +170,6 @@ function addTag(e) {
     .catch((error) => {
       console.error("Error:", error);
     });
-
-  NEWTAGINPUT.value = "";
-  document.getElementById(badgeId).addEventListener("click", function (e) { addCustomTag(e); });
-  document.getElementById(badgeId + "Img").addEventListener("click", function (e) { addCustomTag(e); });
 
 }
 

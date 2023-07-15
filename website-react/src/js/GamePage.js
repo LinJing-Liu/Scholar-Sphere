@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import './App.css';
-import io from 'socket.io-client';
 import ReactDOM from "react-dom";
+
+import io from 'socket.io-client';
 import clg from 'crossword-layout-generator';
+
+import Navbar from './NavigationBar';
+import '../css/GamePage.css';
 
 const GamePage = ({ words }) => {
   const testjson = [
@@ -18,6 +21,7 @@ const GamePage = ({ words }) => {
   ]
   //<CrosswordComponent words={testjson} ></CrosswordComponent>
   return <div>
+    <Navbar />
     Start GamesPage
     <TypeWord words={words} />
     <MultipleChoice words={words} />

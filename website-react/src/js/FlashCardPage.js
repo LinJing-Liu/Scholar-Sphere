@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
+
 import io from 'socket.io-client';
-import './App.js';
+
+import '../css/FlashCardPage.css';
 
 const FlashCardPage = ({ words }) => {
-  return <div>
-    Start FlashCardPage
+  return <div id="flash-card-page-container">
     <FlashCards words={words}></FlashCards>
-    End FlashCardPage
   </div>;
 };
 
@@ -43,7 +42,7 @@ function FlashCards({ words }) {
 
   return (
     <div>
-      <h1>Flashcards:</h1>
+      <h1 id="flashcardsHeading">Flashcards</h1>
       <FlashCard data={currentCard} />
       <p>
         {currentIndex + 1} out of {words.length}
