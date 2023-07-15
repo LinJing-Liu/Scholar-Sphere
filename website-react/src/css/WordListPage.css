@@ -96,19 +96,6 @@
     margin: 0.75rem;
     text-align: left;
     border-radius: 15px;
-    /* blue 4 */
-    background-color: #e3f2f8; 
-    /* green 5 */
-    background-color: #dbf4e8;
-    /* purple 3 */
-    background-color: #e9d3ff;
-    /* red 1 */
-    background-color: #ffe8e7;
-    /* orange 2 */
-    /* yellow 3 */
-    /* lime green 4 */
-    /* green 5 */
-    background-color: #fff6d0c9;
 }
 .highlight {
     background-color: yellow;
@@ -120,7 +107,6 @@
     margin-left: 0;
 }
 .word-confidence .badge {
-    background-color: #fff313;
     color: black;
     font-size: 0.75rem;
     font-weight: 400;
@@ -151,6 +137,29 @@
     padding: 0.5rem;
     margin-right: 0.5rem;
     margin-top: 0.25rem;
+}
+.word-button {
+    background-color: white;
+    margin: 0.5rem 0;
+    margin-right: 0.5rem;
+    border-radius: 15px;
+}
+.word-button img {
+    max-width: 1.5rem;
+}
+.edit-button, .save-button {
+    border: 1px solid blue;
+}
+.delete-button, .cancel-button {
+    border: 1px solid red;
+}
+.edit-button:hover, .save-button:hover {
+    background-color: blue;
+    color: white;
+}
+.delete-button:hover, .cancel-button:hover {
+    background-color: red;
+    color: white;
 }
 .add-tag-section img, .remove-tag-section img {
     max-width: 1.5rem;

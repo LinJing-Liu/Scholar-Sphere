@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const FilterDropdown = ({ label, options, selection, onSelect }) => {
+const FilterDropdown = ({ display, label, options, selection, onSelect }) => {
     const selectOption = (event) => {
         let newSelection = [];
         let selected = event.target.value;
@@ -28,7 +28,7 @@ const FilterDropdown = ({ label, options, selection, onSelect }) => {
         <div class="filterDropdown">
             <div class="dropdown">
                 <button class="btn dropdown-toggle" type="button" id={label + "dropdownBtn"} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {label}
+                    {display}
                 </button>
                 <div class="dropdown-menu" aria-labelledby={label + "dropdownBtn"}>
                     <div class="form-check selectAll">
