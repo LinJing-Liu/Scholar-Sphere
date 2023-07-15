@@ -204,13 +204,18 @@ flashcards
 /*
 game page
 */
+.row {
+  display: flex;
+}
+
 .cell {
-  border: 1px solid #000;
+  position: relative;
   width: 30px;
   height: 30px;
-  display: inline-flex;
-  justify-content: center;
+  border: 1px solid #000;
+  display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .cell-black {
@@ -219,6 +224,35 @@ game page
 
 .cell-white {
   background-color: white;
+}
+
+.cell-number {
+  position: absolute;
+  top: -30px;
+  /* Adjust as necessary */
+  left: -30px;
+  /* Adjust as necessary */
+  font-size: 10px;
+}
+
+.cell-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  text-align: center;
+  background: transparent;
+  outline: none;
+}
+
+.crossword-game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Adjust the height as needed */
+  text-align: center;
+  /* Add this line to center align the content */
 }
 
 /*

@@ -80,48 +80,67 @@ function TypeWord({ words }) {
   );
 }
 
-
-
-
 const generateCrosswordLayoutSkeleton = (words) => {
   const randomWords = words.words.slice().sort(() => 0.5 - Math.random());
-  const selectedWords = randomWords.slice(0, 10);
+  const selectedWords = randomWords.slice(0, 3);
 
   const input_json = selectedWords.map(word => ({ answer: word.word, clue: word.definition }));
   const layout = clg.generateLayout(input_json);
   const table = layout.table;
 
+  // Creating an array for word indexes
+  const wordIndexes = layout.result.reduce((arr, word) => {
+    if (word.orientation !== "none") {
+      arr[word.position - 1] = { row: word.starty, col: word.startx, number: word.position };
+    }
+    return arr;
+  }, []);
+
   return {
     table,
-    clues: selectedWords.map(word => word.definition),
+    clues: layout.result.map((word, index) => {
+      if (word.orientation !== "none") {
+        return `${word.position}. ${selectedWords[index].definition}`;
+      }
+      return null;
+    }).filter(Boolean),
+    wordIndexes,
   };
 };
-
 const CrosswordSkeleton = ({ words }) => {
   const [crosswordTable, setCrosswordTable] = useState([]);
   const [clues, setClues] = useState([]);
   const [userInput, setUserInput] = useState([]);
   const [winner, setWinner] = useState(false);
+  const [wordIndexes, setWordIndexes] = useState([]);
   const inputRefs = useRef([]);
 
   useEffect(() => {
-    const { table, clues } = generateCrosswordLayoutSkeleton({ words });
+    const { table, clues, wordIndexes } = generateCrosswordLayoutSkeleton({ words });
     setCrosswordTable(table);
     setClues(clues);
+    setWordIndexes(wordIndexes);
     const initialInput = table.map(row => row.map(cell => ''));
     setUserInput(initialInput);
   }, []);
 
   const handleInputChange = (rowIndex, colIndex, e) => {
+    console.log(e.target.value)
     const newInput = userInput.map((row, i) =>
       i !== rowIndex ? row : row.map((cell, j) =>
-        j !== colIndex ? cell : e.target.value.toUpperCase()
+        j !== colIndex ? cell : e.target.value[e.target.value.length - 1].toUpperCase()
       )
     );
     setUserInput(newInput);
-    if (newInput.every((row, i) =>
-      row.every((cell, j) => cell === crosswordTable[i][j])
-    )) {
+    if (
+      newInput.every((row, i) =>
+        row.every(
+          (cell, j) =>
+            cell.toLowerCase() === crosswordTable[i][j].toLowerCase() ||
+            crosswordTable[i][j] === "-"
+        )
+      )
+    ) {
       setWinner(true);
     }
     moveToNextInput(rowIndex, colIndex);
@@ -140,27 +159,35 @@ const CrosswordSkeleton = ({ words }) => {
   };
 
   return (
-    <div>
+    <div className="crossword-game-container">
+      <h1>Crossword Game</h1>
       {crosswordTable.map((row, rowIndex) => (
-        <div key={rowIndex}>
+        <div key={rowIndex} className="row">
           {row.map((cell, colIndex) => {
             const cellClass = cell === '-' ? 'cell-black' : 'cell-white';
+            const wordIndex = wordIndexes.find(idx => idx.row === rowIndex && idx.col === colIndex)
+              ? wordIndexes.find(idx => idx.row === rowIndex && idx.col === colIndex).number
+              : null;
+
             return (
-              <input
-                key={colIndex}
-                className={`cell ${cellClass}`}
-                readOnly={cell === '-'}
-                disabled={cell === '-'}
-                value={userInput[rowIndex][colIndex] || ''}
-                maxLength={1}
-                onChange={(e) => handleInputChange(rowIndex, colIndex, e)}
-                ref={(el) => {
-                  if (!inputRefs.current[rowIndex]) {
-                    inputRefs.current[rowIndex] = [];
-                  }
-                  inputRefs.current[rowIndex][colIndex] = el;
-                }}
-              />
+              <div className={`cell ${cellClass}`} key={colIndex}>
+                {wordIndex && <div className="cell-number">{wordIndex}</div>}
+                {cell !== '-' && (
+                  <input
+                    className="cell-input"
+                    value={userInput[rowIndex][colIndex] || ''}
+                    maxLength={2}
+                    onChange={(e) => handleInputChange(rowIndex, colIndex, e)}
+                    ref={(el) => {
+
+                      if (!inputRefs.current[rowIndex]) {
+                        inputRefs.current[rowIndex] = [];
+                      }
+                      inputRefs.current[rowIndex][colIndex] = el;
+                    }}
+                  />
+                )}
+              </div>
             );
           })}
         </div>
@@ -173,6 +200,9 @@ const CrosswordSkeleton = ({ words }) => {
     </div>
   );
 };
+
+
+
 const MultipleChoice = ({ words }) => {
   const [selectedWord, setSelectedWord] = useState(null);
   const [options, setOptions] = useState([]);
