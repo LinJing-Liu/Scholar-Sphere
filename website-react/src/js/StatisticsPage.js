@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
-import io from 'socket.io-client';
+
+import Navbar from './NavigationBar';
 
 const StatisticsPage = () => {
-  return <div>Start StatisticsPage
+  return <div>
+    <Navbar />
+    Start StatisticsPage
     <br></br>
     End StatisticsPage
   </div>;
