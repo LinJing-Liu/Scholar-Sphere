@@ -1,7 +1,8 @@
-#word-list-page-container {
-    padding: 100px 50px;
-    padding-bottom: 150px;
+#word-list-page-header {
+    padding: 6rem 2rem;
+    padding-bottom: rem;
     background-color: #fffdf5;
+    border-bottom: 1rem solid #f08377;
 }
 #wordlistHeading {
     font-size: 5rem;
@@ -76,6 +77,11 @@
 .dropdown {
     margin-bottom: 10px;
 }
+#word-list-page-content {
+    background-color: white;
+    padding: 6rem 3rem;
+    padding-top: 1rem;
+}
 .word-list {
     margin-top: 3rem;
 }
@@ -86,14 +92,92 @@
     padding: 20px;
 }
 .word-item {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    background-color: #f9f9f9;
+    padding: 2rem;
+    margin: 0.75rem;
+    text-align: left;
+    border-radius: 15px;
+    /* blue 4 */
+    background-color: #e3f2f8; 
+    /* green 5 */
+    background-color: #dbf4e8;
+    /* purple 3 */
+    background-color: #e9d3ff;
+    /* red 1 */
+    background-color: #ffe8e7;
+    /* orange 2 */
+    /* yellow 3 */
+    /* lime green 4 */
+    /* green 5 */
+    background-color: #fff6d0c9;
 }
 .highlight {
     background-color: yellow;
 }
 .word-picture {
-    max-width: 100px;
+    max-width: 60%;
+}
+.word-confidence {
+    margin-left: 0;
+}
+.word-confidence .badge {
+    background-color: #fff313;
+    color: black;
+    font-size: 0.75rem;
+    font-weight: 400;
+    padding: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+.word-heading {
+    font-weight: 300;
+    font-size: 2rem;
+    margin-bottom: 0;
+}
+.word-explanation, .word-definition {
+    margin: 0;
+}
+.word-explanation label, .word-example label{
+    display: block;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: small;
+    color: #6d6c6c;
+}
+.tag-badge {
+    font-size: 0.9rem;
+    font-weight: 400;
+    background-color: white;
+    color: black;
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 0.25rem;
+}
+.add-tag-section img, .remove-tag-section img {
+    max-width: 1.5rem;
+}
+.edit-form label{
+    font-size: 0.75rem;
+    margin: 0;
+}
+.edit-form .form-group {
+    margin-bottom: 0.5rem;
+}
+.edit-form input, .edit-form textarea {
+    font-size: 0.9rem;
+    padding: 0.25rem;
+}
+.edit-form textarea {
+    height: 3rem;
+}
+.edit-form .edit-tag-badge {
+    padding: 0.25rem;
+    font-size: 0.75rem;
+}
+.edit-form #confidence-select {
+    display: inline;
+    max-width: 30%;
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+    color: black;
+    padding: 0.25rem;
 }

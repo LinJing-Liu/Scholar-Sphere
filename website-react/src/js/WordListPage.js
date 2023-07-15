@@ -6,7 +6,14 @@ import DOMPurify from "dompurify";
 import Navbar from './NavigationBar';
 import FilterDropdown from './FilterDropdown';
 import '../css/WordListPage.css';
+
 import searchIcon from '../img/search.png';
+import addIcon from '../img/addIcon.png';
+import removeIcon from '../img/removeIcon.png';
+import editIcon from '../img/editIcon.png';
+import deleteIcon from '../img/deleteIcon.png';
+import starIcon from '../img/star.png';
+import filledStarIcon from '../img/star_fill.png';
 
 const WordListPage = ({ words, onUpdateWord, onDeleteWord, tags }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,47 +39,51 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, tags }) => {
     <div>
       <Navbar />
       <div id="word-list-page-container">
-        <h1 id="wordlistHeading">Word List</h1>
-        <div class="input-group mb-3" id="searchInputDiv">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-default">
-              <img src={searchIcon} />
-              Search
-            </span>
+        <div id="word-list-page-header">
+          <h1 id="wordlistHeading">Word List</h1>
+          <div class="input-group mb-3" id="searchInputDiv">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">
+                <img src={searchIcon} />
+                Search
+              </span>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter keywords"
+              value={searchTerm}
+              onChange={handleSearch}
+              aria-describedby="inputGroup-sizing-default"
+            />
           </div>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter keywords"
-            value={searchTerm}
-            onChange={handleSearch}
-            aria-describedby="inputGroup-sizing-default"
-          />
+
+          <div id="filterContainer">
+            <div id="filterHeading">Filters</div>
+            <div class="row">
+              <div class="col">
+                <FilterDropdown label="Tags" options={tags} selection={tagSelected} onSelect={setTagSelected}/>
+              </div>
+              <div class="col">
+                <FilterDropdown label="Confidence Level" options={["1", "2", "3", "4", "5"]} selection={confidenceSelected} onSelect={setConfidenceSelected}/>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div id="filterContainer">
-          <div id="filterHeading">Filters</div>
-          <div class="row">
-            <div class="col">
-              <FilterDropdown label="Tags" options={tags} selection={tagSelected} onSelect={setTagSelected}/>
-            </div>
-            <div class="col">
-              <FilterDropdown label="Confidence Level" options={["1", "2", "3", "4", "5"]} selection={confidenceSelected} onSelect={setConfidenceSelected}/>
-            </div>
-          </div>
+        <div id="word-list-page-content">
+          <WordList words={filteredWords} searchTerm={searchTerm} onUpdateWord={onUpdateWord} onDeleteWord={onDeleteWord} tags={tags} />
         </div>
-
-        <WordList words={filteredWords} searchTerm={searchTerm} onUpdateWord={onUpdateWord} onDeleteWord={onDeleteWord} />
       </div>
     </div>
   );
 };
-function WordList({ words, searchTerm, onUpdateWord, onDeleteWord }) {
+function WordList({ words, searchTerm, onUpdateWord, onDeleteWord, tags }) {
   return (
     <div className="word-list">
       <div className="word-grid">
         {words && words.map((word, index) => (
-          <Word key={index} data={word} searchTerm={searchTerm} onUpdateWord={(updatedWord) => onUpdateWord(updatedWord, index)} onDeleteWord={() => onDeleteWord(index)} />
+          <Word key={index} data={word} searchTerm={searchTerm} onUpdateWord={(updatedWord) => onUpdateWord(updatedWord, index)} onDeleteWord={() => onDeleteWord(index)} tags={tags} />
         ))}
       </div>
     </div>
@@ -81,7 +92,7 @@ function WordList({ words, searchTerm, onUpdateWord, onDeleteWord }) {
 
 
 
-function Word({ data, searchTerm, onUpdateWord, onDeleteWord }) {
+function Word({ data, searchTerm, onUpdateWord, onDeleteWord, tags }) {
   const regex = new RegExp(`(${searchTerm})`, 'gi');
 
   const [editing, setEditing] = useState(false);
@@ -112,30 +123,80 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord }) {
     onUpdateWord(tempData); // Call the function passed from the parent component
     setEditing(false);
   };
+  const handleCancelEdit = () => {
+    setTempData(data);
+    setEditing(false);
+  };
+  const handleTagChange = (event) => {
+    let newTempData = tempData;
+    let tag = event.target.id;
+    if(tempData.tag.indexOf(tag) != -1) {
+      newTempData.tag = newTempData.tag.filter(t => t != tag);
+    } else {
+      newTempData.tag.push(tag);
+    }
+    if(event.target.src == addIcon) {
+      event.target.setAttribute("src", removeIcon);
+    } else {
+      event.target.setAttribute("src", addIcon);
+    }
+    setTempData(newTempData);
+  };
+
   if (editing) {
     return (
-      <div className='word-item'>
-        Word:
-        <input name="word" value={tempData.word} onChange={handleChange} />
-        <br></br>
-        Definition:
-        <textarea name="definition" value={tempData.definition} onChange={handleChange} />
-        <br></br>
-        Explanation:
-        <textarea name="explanation" value={tempData.explanation} onChange={handleChange} />
-        <br></br>
-        Example:
-        <textarea name="example" value={tempData.example} onChange={handleChange} />
-        <br></br>
-        Picture:
-        <textarea name="picture" value={tempData.picture} onChange={handleChange} />
-        <br></br>
-        {/* TODO: update tag to allow user add and delete tag dynamically */}
-        Tags:
-        <input name="tags" value={tempData.tags} onChange={handleChange} />
-        <br></br>
-        <button onClick={handleSave}>Save</button>
-
+      <div className="word-item edit-form">
+        <div class="form-group">
+          <label>Word</label>
+          <input class="form-control" name="word" value={tempData.word} onChange={handleChange} />
+        </div>
+        <div class="form-group">
+          <label>Definition</label>
+          <textarea class="form-control" name="definition" value={tempData.definition} onChange={handleChange} />
+        </div>
+        <div class="form-group">
+          <label>Explanation</label>
+          <textarea class="form-control" name="explanation" value={tempData.explanation} onChange={handleChange} />
+        </div>
+        <div class="form-group">
+          <label>Example</label>
+          <textarea class="form-control" name="example" value={tempData.example} onChange={handleChange} />
+        </div>
+        <div class="form-group">
+          <label>Picture</label>
+          <textarea class="form-control" name="picture" value={tempData.picture} onChange={handleChange} />
+        </div>
+        <div class="form-group">
+          <label>Confidence Level</label>
+          <select class="form-control" id="confidence-select" name="confidence" value={tempData.confidence} onChange={handleChange}>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tags</label>
+          <div class="add-tag-section">
+            {
+              tempData.tag && 
+              tempData.tag.map((t, id) => <span key={id}><img id={t} src={removeIcon} onClick={(e) => handleTagChange(e)} /><span class="badge tag-badge edit-tag-badge">{t}</span></span>)
+            }
+          </div>
+          <div class="remove-tag-section">
+            {
+              tags &&
+              tags.filter(t => tempData.tag.indexOf(t) == -1).map((t, id) => 
+                <span key={id}>
+                  <img id={t} src={addIcon} onClick={(e) => handleTagChange(e)} />
+                  <span class="badge tag-badge edit-tag-badge">{t}</span>
+                </span>)
+            }
+          </div>
+        </div>
+        <button type="button" class="btn primary-btn" onClick={handleSave}>Save</button>
+        <button type="button" class="btn primary-btn" onClick={handleCancelEdit}>Cancel</button>
       </div>
     );
   }
@@ -148,16 +209,21 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord }) {
   return (
     <div className="word-item">
       <div class="word-confidence">
-        <span class="badge">Confidence ({data.confidence && data.confidence})</span>
+        <span class="badge">CONFIDENCE {data.confidence && data.confidence}</span>
       </div>
 
       <h2 class="word-heading" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(word) }}></h2>
-      <p class="word-definition"><strong>Definition:</strong> <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(definition) }}></span></p>
-      <p class="word-explanation"><strong>Explanation:</strong> <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(explanation) }}></span></p>
-      <p class="word-example"><strong>Example:</strong> <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(example) }}></span></p>
-      {/* {tags && <p><strong>Tags:</strong> <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(tags) }}></span></p>} */}
-      {data.tag && data.tag.map((t, id) => <span class="badge" key={id}>{t}</span>)}
-      {data.picture && <img class="word-picture" src={data.picture} />}
+      <p class="word-definition"><span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(definition) }}></span></p>
+      <p class="word-explanation"><label>Explanation</label> <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(explanation) }}></span></p>
+      <p class="word-example"><label>Example</label> <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(example) }}></span></p>
+
+      <p class="word-tags">
+        {data.tag && data.tag.map((t, id) => <span class="badge tag-badge" key={id}>{t}</span>)}
+      </p>
+
+      <p class="word-picture-container">
+        {data.picture && <img class="word-picture" src={data.picture} />}
+      </p>
 
       <button onClick={handleEdit}>Edit</button>
       <button onClick={handleDelete}>Delete</button>
