@@ -39,6 +39,19 @@ function App() {
     localStorage.setItem("words", JSON.stringify(newWords));
   };
 
+  const handleAddWord = (word) => {
+    let newWords = [...words, word];
+    setWords(newWords);
+    localStorage.setItem("words", JSON.stringify(newWords));
+  }
+
+  const handleUpdateTag = (newTags) => {
+    const socket = io('http://localhost:5000');
+    socket.emit("sync tag", { newTags });
+    setTags(newTags);
+    localStorage.setItem("tags", JSON.stringify(newTags));
+  }
+
   useEffect(() => {
     const socket = io('http://localhost:5000');
 
@@ -88,15 +101,11 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route exact path="/" element={<HomePage words={words} />} />
-            <Route exact path="/word-list" element={<WordListPage words={words} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} tags={tags} />} />
+            <Route exact path="/word-list" element={<WordListPage words={words} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} onAddWord={handleAddWord} tags={tags} updateTags={handleUpdateTag} />} />
             <Route exact path="/games" element={<GamePage words={words} />} />
             <Route exact path="/statistics" element={<StatisticsPage />} />
           </Routes>
         </BrowserRouter>
-
-        {/* <FixedNavButtons /> */}
-        {/* <InputListener words={words} setWords={setWords} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} 
-        tags={tags} setTags={setTags} /> */}
     </div>
   );
 }
@@ -170,31 +179,5 @@ const InputListener = ({ words, setWords, onUpdateWord, onDeleteWord, tags, setT
     </div>
   );
 };
-
-// const ToPageButton = ({ id, buttonText }) => {
-//   const handleScroll = () => {
-//     const container = document.getElementById(id);
-//     container.scrollIntoView({ behavior: 'smooth' });
-//   };
-
-//   return (
-//     <button onClick={handleScroll}>{buttonText}</button>
-//   );
-// };
-
-// const FixedNavButtons = () => {
-//   return (
-//     <div className="fixed-nav-buttons">
-//       <div className="brand">ScholarSphere</div>
-//       <div className="buttons">
-//         <ToPageButton id="home-page-container" buttonText="Home" />
-//         <ToPageButton id="flash-card-page-container" buttonText="Flashcards" />
-//         <ToPageButton id="word-list-page-container" buttonText="Word List" />
-//         <ToPageButton id="game-page-container" buttonText="Games" />
-//         <ToPageButton id="statistics-page-container" buttonText="Statistics" />
-//       </div>
-//     </div>
-//   );
-// };
 
 export default App;

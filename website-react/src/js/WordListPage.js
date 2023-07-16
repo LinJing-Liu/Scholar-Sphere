@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
-
-import io from 'socket.io-client';
+import React, { useState } from 'react';
 import DOMPurify from "dompurify";
 
 import Navbar from './NavigationBar';
 import FilterDropdown from './FilterDropdown';
+import AddWordForm from './AddWordForm';
 import '../css/WordListPage.css';
 
 import searchIcon from '../img/search.png';
-import addIcon from '../img/addIcon.png';
-import removeIcon from '../img/removeIcon.png';
 import editIcon from '../img/edit.png';
 import deleteIcon from '../img/delete.png';
 import starIcon from '../img/star.png';
 import filledStarIcon from '../img/star_fill.png';
+import AddWordCollapse from './AddWordCollapse';
+import ManageTag from './ManageTag';
 
 const confidenceColor = [
   {
@@ -38,7 +37,7 @@ const confidenceColor = [
   }
 ]
 
-const WordListPage = ({ words, onUpdateWord, onDeleteWord, tags }) => {
+const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, updateTags }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [tagSelected, setTagSelected] = useState([]);
   const [confidenceSelected, setConfidenceSelected] = useState([]);
@@ -92,6 +91,9 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, tags }) => {
               </div>
             </div>
           </div>
+
+          <AddWordCollapse tags={tags} onAddWord={onAddWord} />
+          <ManageTag tags={tags} updateTags={updateTags}/>
         </div>
 
         <div id="word-list-page-content">
@@ -128,9 +130,6 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord, tags }) {
     );
   };
 
-  const handleChange = (event) => {
-    setTempData({ ...tempData, [event.target.name]: event.target.value });
-  };
   const handleDelete = () => {
     // Call the function passed from the parent component
     onDeleteWord();
@@ -147,25 +146,12 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord, tags }) {
     onUpdateWord(tempData); // Call the function passed from the parent component
     setEditing(false);
   };
+
   const handleCancelEdit = () => {
     setTempData(data);
     setEditing(false);
   };
-  const handleTagChange = (event) => {
-    let newTempData = tempData;
-    let tag = event.target.id;
-    if(tempData.tag.indexOf(tag) != -1) {
-      newTempData.tag = newTempData.tag.filter(t => t != tag);
-    } else {
-      newTempData.tag.push(tag);
-    }
-    if(event.target.src == addIcon) {
-      event.target.setAttribute("src", removeIcon);
-    } else {
-      event.target.setAttribute("src", addIcon);
-    }
-    setTempData(newTempData);
-  };
+
   const toggleStar = () => {
     let updateWord = data;
     if(updateWord.tag.indexOf("starred") != -1) {
@@ -177,64 +163,13 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord, tags }) {
   }
 
   if(editing) {
-    return (
-      <div className="word-item edit-form" style={{ backgroundColor: confidenceColor[data.confidence - 1].background }}>
-        <div class="form-group">
-          <label>Word</label>
-          <input class="form-control" name="word" value={tempData.word} onChange={handleChange} />
-        </div>
-        <div class="form-group">
-          <label>Definition</label>
-          <textarea class="form-control" name="definition" value={tempData.definition} onChange={handleChange} />
-        </div>
-        <div class="form-group">
-          <label>Explanation</label>
-          <textarea class="form-control" name="explanation" value={tempData.explanation} onChange={handleChange} />
-        </div>
-        <div class="form-group">
-          <label>Example</label>
-          <textarea class="form-control" name="example" value={tempData.example} onChange={handleChange} />
-        </div>
-        <div class="form-group">
-          <label>Picture</label>
-          <textarea class="form-control" name="picture" value={tempData.picture} onChange={handleChange} />
-        </div>
-        <div class="form-group">
-          <label>Confidence Level</label>
-          <select class="form-control" id="confidence-select" name="confidence" value={tempData.confidence} onChange={handleChange}>
-            {[1, 2, 3, 4, 5].map((n, id) => <option key={id}>{n}</option>)}
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Tags</label>
-          <div class="add-tag-section">
-            {
-              tempData.tag && 
-              tempData.tag.filter(t => t != "starred").map((t, id) => <span key={id}><img id={t} src={removeIcon} onClick={(e) => handleTagChange(e)} /><span class="badge tag-badge edit-tag-badge">{t}</span></span>)
-            }
-          </div>
-          <div class="remove-tag-section">
-            {
-              tags &&
-              tags.filter(t => tempData.tag.indexOf(t) == -1 && t != "starred").map((t, id) => 
-                <span key={id}>
-                  <img id={t} src={addIcon} onClick={(e) => handleTagChange(e)} />
-                  <span class="badge tag-badge edit-tag-badge">{t}</span>
-                </span>)
-            }
-          </div>
-        </div>
-        <button type="button" class="btn primary-btn word-button save-button" onClick={handleSave}>Save</button>
-        <button type="button" class="btn primary-btn word-button cancel-button" onClick={handleCancelEdit}>Cancel</button>
-      </div>
-    );
+    return (<AddWordForm tags={tags} customClass="edit-form" formColor={confidenceColor[data.confidence - 1].background} word={tempData} setWord={setTempData} handleSave={handleSave} handleCancel={handleCancelEdit} />);  
   }
 
   const word = highlightText(data.word);
   const definition = highlightText(data.definition);
   const explanation = highlightText(data.explanation);
   const example = highlightText(data.example);
-  // const tags = data.tags && highlightText(data.tags);
 
   return (
     <div className="word-item" style={{ backgroundColor: confidenceColor[data.confidence - 1].background }}>
