@@ -83,19 +83,25 @@ function TypeWord({ words }) {
     </div>
   );
 }
-
 const generateCrosswordLayoutSkeleton = (words) => {
   const randomWords = words.words.slice().sort(() => 0.5 - Math.random());
   const selectedWords = randomWords.slice(0, 3);
 
   const input_json = selectedWords.map(word => ({ answer: word.word, clue: word.definition }));
   const layout = clg.generateLayout(input_json);
-  const table = layout.table;
+  let table = layout.table;
+
+  // Add a buffer of "-" around the table
+  const bufferRow = Array(table[0].length + 2).fill('-');
+  table = table.map(row => ['-'].concat(row).concat(['-']));
+  table.unshift(bufferRow);
+  table.push(bufferRow);
 
   // Creating an array for word indexes
   const wordIndexes = layout.result.reduce((arr, word) => {
     if (word.orientation !== "none") {
-      arr[word.position - 1] = { row: word.starty, col: word.startx, number: word.position };
+      // Increment row and column index by 1 to account for the added buffer
+      arr[word.position - 1] = { row: word.starty + 1, col: word.startx + 1, number: word.position };
     }
     return arr;
   }, []);
@@ -111,6 +117,7 @@ const generateCrosswordLayoutSkeleton = (words) => {
     wordIndexes,
   };
 };
+
 const CrosswordSkeleton = ({ words }) => {
   const [crosswordTable, setCrosswordTable] = useState([]);
   const [clues, setClues] = useState([]);
@@ -184,43 +191,49 @@ const CrosswordSkeleton = ({ words }) => {
   return (
     <div className="crossword-game-container">
       <h1>Crossword Game</h1>
-      {crosswordTable.map((row, rowIndex) => (
-        <div key={rowIndex} className="row">
-          {row.map((cell, colIndex) => {
-            const cellClass = cell === '-' ? 'cell-black' : 'cell-white';
-            const wordIndex = wordIndexes.find(idx => idx.row === rowIndex && idx.col === colIndex)
-              ? wordIndexes.find(idx => idx.row === rowIndex && idx.col === colIndex).number
-              : null;
+      <div className="crossword-table">
 
-            return (
-              <div className={`cell ${cellClass}`} key={colIndex}>
-                {wordIndex && <div className="cell-number">{wordIndex}</div>}
-                {cell !== '-' && (
-                  <input
-                    className="cell-input"
-                    value={userInput[rowIndex][colIndex] || ''}
-                    maxLength={2}
-                    onChange={(e) => handleInputChange(rowIndex, colIndex, e)}
-                    onKeyDown={(e) => handleKeyDown(rowIndex, colIndex, e)}
-                    ref={(el) => {
-                      if (!inputRefs.current[rowIndex]) {
-                        inputRefs.current[rowIndex] = [];
-                      }
-                      inputRefs.current[rowIndex][colIndex] = el;
-                    }}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
-      ))}
+        {crosswordTable.map((row, rowIndex) => (
+
+          <div key={rowIndex} className="row">
+            {row.map((cell, colIndex) => {
+              const cellClass = cell === '-' ? 'cell-black' : 'cell-white';
+              const wordIndex = wordIndexes.find(idx => idx.row === rowIndex && idx.col === colIndex)
+                ? wordIndexes.find(idx => idx.row === rowIndex && idx.col === colIndex).number
+                : null;
+
+              return (
+                <div className={`cell ${cellClass}`} key={colIndex}>
+                  {wordIndex && <div className="cell-number">{wordIndex}</div>}
+                  {cell !== '-' && (
+                    <input
+                      className="cell-input"
+                      value={userInput[rowIndex][colIndex] || ''}
+                      maxLength={2}
+                      onChange={(e) => handleInputChange(rowIndex, colIndex, e)}
+                      onKeyDown={(e) => handleKeyDown(rowIndex, colIndex, e)}
+                      ref={(el) => {
+                        if (!inputRefs.current[rowIndex]) {
+                          inputRefs.current[rowIndex] = [];
+                        }
+                        inputRefs.current[rowIndex][colIndex] = el;
+                      }}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+
+      </div>
+
       {winner && <h2>Winner!</h2>}
       <h3>Clues:</h3>
       <ul>
         {clues.map((clue, index) => <li key={index}>{clue}</li>)}
       </ul>
-    </div>
+    </div >
   );
 };
 
