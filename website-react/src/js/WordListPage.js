@@ -31,7 +31,8 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, tags }) => {
   return (
     <div>
       <Navbar />
-      <div id="word-list-page-container">
+      <div className="word-list-page-container">
+        word list page start
         <h1 id="wordlistHeading">Word List</h1>
         <div class="input-group mb-3" id="searchInputDiv">
           <div class="input-group-prepend">
@@ -54,15 +55,16 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, tags }) => {
           <div id="filterHeading">Filters</div>
           <div class="row">
             <div class="col">
-              <FilterDropdown label="Tags" options={tags} selection={tagSelected} onSelect={setTagSelected}/>
+              <FilterDropdown label="Tags" options={tags} selection={tagSelected} onSelect={setTagSelected} />
             </div>
             <div class="col">
-              <FilterDropdown label="Confidence Level" options={["1", "2", "3", "4", "5"]} selection={confidenceSelected} onSelect={setConfidenceSelected}/>
+              <FilterDropdown label="Confidence Level" options={["1", "2", "3", "4", "5"]} selection={confidenceSelected} onSelect={setConfidenceSelected} />
             </div>
           </div>
         </div>
 
         <WordList words={filteredWords} searchTerm={searchTerm} onUpdateWord={onUpdateWord} onDeleteWord={onDeleteWord} />
+        word list page end
       </div>
     </div>
   );

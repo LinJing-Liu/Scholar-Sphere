@@ -1,41 +1,53 @@
 .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+
     display: flex;
     justify-content: space-between;
     padding: 1.5em 0;
-    /* Increased vertical padding, removed horizontal padding */
     background-color: #8fcaca;
     font-size: medium;
-} 
+}
+
 .navbar-left,
 .navbar-right {
     display: flex;
     align-items: center;
-} 
+}
+
 .navbar-left {
     margin-left: 40px;
     margin-right: auto;
     /* Added margin-right: auto to push navbar-left to the left side */
-}  
+}
+
 .navbar-right {
     display: flex;
     align-items: center;
     padding-right: 40px;
 }
+
 .navbar-left a {
     text-decoration: none;
     color: #417676;
     font-size: large;
     font-weight: 500;
 }
+
 .navbar-left a:hover {
     color: white;
 }
+
 .navbar-right a,
 .navbar-right Link {
     margin-left: 25px;
     color: #ffffff;
     text-decoration: none;
-} 
+}
+
 .navbar-right a:hover {
     color: #417676;
 }
@@ -54,7 +66,8 @@
     /* Align buttons to the right side */
     align-items: center;
     z-index: 9999;
-} 
+}
+
 .fixed-nav-buttons .buttons {
     display: flex;
     gap: 0;
@@ -63,9 +76,10 @@
     max-width: 67%;
     /* Set max-width to 67% of the screen width */
     overflow-x: auto;
-  
+
     /* Enable horizontal scrolling */
-} 
+}
+
 .fixed-nav-buttons .buttons button {
     flex: 1;
     /* Make buttons the same width and distribute remaining space evenly */
@@ -73,7 +87,8 @@
     background-color: #ff0000;
     /* Set button height to 3x the previous height */
     margin: 0;
-} 
+}
+
 .fixed-nav-buttons .brand {
     margin-left: 10px;
     margin-right: auto;

@@ -22,13 +22,16 @@ const GamePage = ({ words }) => {
   //<CrosswordComponent words={testjson} ></CrosswordComponent>
   return <div>
     <Navbar />
-    Start GamesPage
-    <TypeWord words={words} />
-    <MultipleChoice words={words} />
+    <div className='game-page-container'>
+      Start GamesPage
+      <TypeWord words={words} />
+      <MultipleChoice words={words} />
 
-    <CrosswordSkeleton words={words} ></CrosswordSkeleton>
+      <CrosswordSkeleton words={words} ></CrosswordSkeleton>
 
-    End GamesPage
+      End GamesPage
+    </div>
+
   </div>;
 };
 
