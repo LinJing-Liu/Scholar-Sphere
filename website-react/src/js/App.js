@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { HashLink as Link } from 'react-router-hash-link';
+
 //import { Element } from "react-scroll";
 import io from 'socket.io-client';
 
@@ -8,6 +11,7 @@ import FlashCardPage from './FlashCardPage.js'; // Assume your Home component is
 import WordListPage from './WordListPage.js';
 import GamePage from './GamePage.js';
 import StatisticsPage from './StatisticsPage.js';
+import StandaloneFlashCardPage from './StandaloneFlashCardPage.js';
 import '../css/App.css';
 
 function App() {
@@ -88,25 +92,15 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Element name="welcome">
-        <HomePage words={words} />
-      </Element>
-      <Element name="flashcards">
-        <FlashCardPage words={words} />
-      </Element> */}
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<HomePage words={words} />} />
-          <Route exact path="/flashcards" element={<FlashCardPage words={words} />} />
+          {/* <Route exact path="/flashcards" element={<StandaloneFlashCardPage words={words} />} /> */}
           <Route exact path="/word-list" element={<WordListPage words={words} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} tags={tags} />} />
           <Route exact path="/games" element={<GamePage words={words} />} />
           <Route exact path="/statistics" element={<StatisticsPage />} />
         </Routes>
       </BrowserRouter>
-
-      {/* <FixedNavButtons /> */}
-      {/* <InputListener words={words} setWords={setWords} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} 
-        tags={tags} setTags={setTags} /> */}
     </div>
   );
 }
