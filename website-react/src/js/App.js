@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
+//import { Element } from "react-scroll";
 import io from 'socket.io-client';
 
 import HomePage from './HomePage.js';
@@ -14,6 +14,9 @@ function App() {
   const [words, setWords] = useState(() => {
     const savedWords = localStorage.getItem("words");
     return savedWords ? JSON.parse(savedWords) : [];
+    // const default_word = [{ word: 'banana', definition: 'a yellow fruit', explanation: '', example: '', picture: '', source: 'manual', tag: [], confidence: '5' }]
+
+    // return default_word
   });
 
   const [tags, setTags] = useState(() => {
@@ -85,17 +88,24 @@ function App() {
 
   return (
     <div className="App">
-        <BrowserRouter>
-          <Routes>
-            <Route exact path="/" element={<HomePage words={words} />} />
-            <Route exact path="/word-list" element={<WordListPage words={words} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} tags={tags} />} />
-            <Route exact path="/games" element={<GamePage words={words} />} />
-            <Route exact path="/statistics" element={<StatisticsPage />} />
-          </Routes>
-        </BrowserRouter>
+      {/* <Element name="welcome">
+        <HomePage words={words} />
+      </Element>
+      <Element name="flashcards">
+        <FlashCardPage words={words} />
+      </Element> */}
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<HomePage words={words} />} />
+          <Route exact path="/flashcards" element={<FlashCardPage words={words} />} />
+          <Route exact path="/word-list" element={<WordListPage words={words} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} tags={tags} />} />
+          <Route exact path="/games" element={<GamePage words={words} />} />
+          <Route exact path="/statistics" element={<StatisticsPage />} />
+        </Routes>
+      </BrowserRouter>
 
-        {/* <FixedNavButtons /> */}
-        {/* <InputListener words={words} setWords={setWords} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} 
+      {/* <FixedNavButtons /> */}
+      {/* <InputListener words={words} setWords={setWords} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} 
         tags={tags} setTags={setTags} /> */}
     </div>
   );
