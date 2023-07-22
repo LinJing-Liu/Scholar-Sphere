@@ -1,31 +1,64 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { HashLink as Link } from 'react-router-hash-link';
+import { NavLink } from 'react-router-dom';
+
+import LastPageRouteContext from './LastPageRouteContext';
 
 import '../css/NavigationBar.css';
 
 const Navbar = () => {
+  const { lastRoute } = useContext(LastPageRouteContext);
 
-  let navigate = useNavigate();
-  const navigateToFlashCard = () => {
-    navigate('/');
-    
-    setTimeout(() => {
-      const container = document.getElementById("flash-card-page-container");
-      container.scrollIntoView({ behavior: 'smooth' });
-    }, 1500);
-  }
+  const handleFlashcardsClick = (e) => {
+    if (lastRoute !== '/' && lastRoute !== '/#home') {
+      e.preventDefault();
+      window.location.href = '/#flashcards';
+    }
+  };
 
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <Link to="/">Scholar Sphere</Link>
+        <Link
+          onClick={() => window.scrollTo(0, 0)}
+          smooth
+          to="/#home"
+        >
+          ScholarSphere
+        </Link>
       </div>
       <div className="navbar-right">
-        <Link to="/">Home</Link>
-        <Link to="/" onClick={navigateToFlashCard}>Flashcards</Link>
-        <Link to="/word-list">Word List</Link>
-        <Link to="/games">Games</Link>
-        <Link to="/statistics">Statistics</Link>
+        <Link
+          onClick={() => window.scrollTo(0, 0)}
+          smooth
+          to="/#home"
+        >
+          Home
+        </Link>
+        <Link
+          smooth
+          to="/#flashcards"
+        >
+          Flashcards
+        </Link>
+        <NavLink
+          onClick={() => window.scrollTo(0, 0)}
+          to="/word-list"
+        >
+          Word List
+        </NavLink>
+        <NavLink
+          onClick={() => window.scrollTo(0, 0)}
+          to="/games"
+        >
+          Games
+        </NavLink>
+        <NavLink
+          onClick={() => window.scrollTo(0, 0)}
+          to="/statistics"
+        >
+          Statistics
+        </NavLink>
       </div>
     </nav>
   );

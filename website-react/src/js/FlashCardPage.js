@@ -6,7 +6,10 @@ import '../css/FlashCardPage.css';
 
 const FlashCardPage = ({ words }) => {
   return <div id="flash-card-page-container">
+    start flashcards
     <FlashCards words={words}></FlashCards>
+    end flashcards
+    <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
   </div>;
 };
 

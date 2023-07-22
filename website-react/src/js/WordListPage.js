@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DOMPurify from "dompurify";
 
 import Navbar from './NavigationBar';
@@ -45,6 +45,9 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const filteredWords = words.filter(word =>
     (
@@ -60,7 +63,7 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
   return (
     <div>
       <Navbar />
-      <div id="word-list-page-container">
+      <div class="word-list-page-container" id="word-list-page-container">
         <div id="word-list-page-header">
           <h1 id="wordlistHeading">Word List</h1>
           <div class="input-group mb-3" id="searchInputDiv">

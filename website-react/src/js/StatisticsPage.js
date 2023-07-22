@@ -5,9 +5,13 @@ import Navbar from './NavigationBar';
 const StatisticsPage = () => {
   return <div>
     <Navbar />
-    Start StatisticsPage
-    <br></br>
-    End StatisticsPage
+    <div className='statistics-page-container'>
+      Start StatisticsPage
+      <br></br>
+      End StatisticsPage
+
+    </div>
+
   </div>;
 };
 

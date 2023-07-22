@@ -1,14 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
+import React, { useEffect, useState, useContext } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import LastPageRouteContext from './LastPageRouteContext';
+import { HashLink as Link } from 'react-router-hash-link';
 import io from 'socket.io-client';
-
 import HomePage from './HomePage.js';
-import FlashCardPage from './FlashCardPage.js'; // Assume your Home component is in Home.js
+import FlashCardPage from './FlashCardPage.js';
 import WordListPage from './WordListPage.js';
 import GamePage from './GamePage.js';
 import StatisticsPage from './StatisticsPage.js';
 import '../css/App.css';
+
+function LastLocationProvider({ children }) {
+  const [lastRoute, setLastRoute] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    setLastRoute(location.pathname);
+  }, [location]);
+
+  return (
+    <LastPageRouteContext.Provider value={{ lastRoute, setLastRoute }}>
+      {children}
+    </LastPageRouteContext.Provider>
+  );
+}
 
 function App() {
   const [words, setWords] = useState(() => {
@@ -109,18 +124,19 @@ function App() {
 
   return (
     <div className="App">
-        <BrowserRouter>
+      <Router>
+        <LastLocationProvider>
           <Routes>
             <Route exact path="/" element={<HomePage words={words} />} />
             <Route exact path="/word-list" element={<WordListPage words={words} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} onAddWord={handleAddWord} tags={tags} updateTags={handleUpdateTag} />} />
             <Route exact path="/games" element={<GamePage words={words} />} />
             <Route exact path="/statistics" element={<StatisticsPage />} />
           </Routes>
-        </BrowserRouter>
+        </LastLocationProvider>
+      </Router>
     </div>
   );
 }
-
 
 const InputListener = ({ words, setWords, onUpdateWord, onDeleteWord, tags, setTags }) => {
   useEffect(() => {
@@ -169,14 +185,12 @@ const InputListener = ({ words, setWords, onUpdateWord, onDeleteWord, tags, setT
 
   return (
     <div>
-
       <div id="home-page-container">
         <HomePage />
       </div>
       <div id="flash-card-page-container">
         <FlashCardPage words={words}></FlashCardPage>
       </div>
-
       <div id="word-list-page-container">
         <WordListPage words={words} onUpdateWord={onUpdateWord} onDeleteWord={onDeleteWord} />
       </div>
@@ -186,7 +200,6 @@ const InputListener = ({ words, setWords, onUpdateWord, onDeleteWord, tags, setT
       <div id="statistics-page-container">
         <StatisticsPage />
       </div>
-
     </div>
   );
 };

@@ -9,13 +9,19 @@ const HomePage = ({ words }) => {
   return (
     <div>
       <Navbar />
-      <div id="hero">
-        <div className='welcome-wrapper'>
-          <Welcome />
+      <div id="home">
+        <div id="hero">
+          <div className='welcome-wrapper'>
+            <Welcome />
+          </div>
+          <div className="arrow"></div>
         </div>
-        <div className="arrow"></div>
+
       </div>
-      <FlashCardPage words={words}></FlashCardPage>
+
+      <div id="flashcards">
+        <FlashCardPage words={words} />
+      </div>
     </div>
   );
 };
