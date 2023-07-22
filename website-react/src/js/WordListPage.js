@@ -92,8 +92,17 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
             </div>
           </div>
 
-          <AddWordCollapse tags={tags} onAddWord={onAddWord} />
-          <ManageTag tags={tags} updateTags={updateTags}/>
+          <br />
+          <div id="controlContainer">
+            <div class="row">
+              <div class="col">
+                <AddWordCollapse tags={tags} onAddWord={onAddWord} />
+              </div>
+              <div class="col">
+                <ManageTag tags={tags} updateTags={updateTags}/>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div id="word-list-page-content">

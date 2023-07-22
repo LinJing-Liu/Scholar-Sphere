@@ -45,11 +45,22 @@ function App() {
     localStorage.setItem("words", JSON.stringify(newWords));
   }
 
-  const handleUpdateTag = (newTags) => {
+  const handleUpdateAllWords = (updatedWords) => {
+    setWords(updatedWords);
+    localStorage.setItem("words", JSON.stringify(updatedWords));
+  }
+
+  const handleUpdateTag = (savedTags) => {
     const socket = io('http://localhost:5000');
-    socket.emit("sync tag", { newTags });
-    setTags(newTags);
-    localStorage.setItem("tags", JSON.stringify(newTags));
+    socket.emit("sync tag", { savedTags });
+    setTags(savedTags);
+    localStorage.setItem("tags", JSON.stringify(savedTags));
+
+    let newWords = words;
+    for(let w of newWords) {
+      w.tag = w.tag.filter(t => savedTags.indexOf(t) != -1);
+    }
+    handleUpdateAllWords(newWords);
   }
 
   useEffect(() => {

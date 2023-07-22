@@ -52,13 +52,13 @@ const AddWordCollapse = ({ tags, onAddWord }) => {
 
   return (
     <div>
-      <button class="btn btn-primary" id="addWordCollpaseBtn" type="button" data-toggle="collapse" data-target="#addWordContainer" aria-expanded="false" aria-controls="addWordContainer" onClick={onToggle}>
+      <button class="btn btn-primary toggle-btn" id="addWordCollpaseBtn" type="button" data-toggle="collapse" data-target="#addWordContainer" aria-expanded="false" aria-controls="addWordContainer" onClick={onToggle}>
         Add Word
       </button>
 
       <div class="collapse" id="addWordContainer">
         <form id="addWordForm">
-            <AddWordForm customClass="" tags={tags} formColor={"white"} word={tempWord} setWord={setTempWord} handleSave={handleSubmit} handleCancel={cancelForm}/>
+            <AddWordForm customClass="addWordForm" tags={tags} formColor={"white"} word={tempWord} setWord={setTempWord} handleSave={handleSubmit} handleCancel={cancelForm}/>
         </form>
       </div>
     </div>

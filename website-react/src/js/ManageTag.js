@@ -1,37 +1,67 @@
 import { useState } from "react";
 import { Collapse } from "bootstrap";
 
-import TagBadge from "./TagBadge";
-
-import removeIcon from "../img/removeIcon.png";
+import cancelIcon from "../img/cancel.png";
 
 const ManageTag = ({ tags, updateTags }) => {
-  const [tagInput, setTagInput] = useState("");
+  const [tagInputCount, setTagInputCount] = useState(0);
 
-  const handleChange = (e) => {
-    setTagInput(e.target.value);
-  }
+  const addTag = () => {
+    let inputDiv = document.createElement("div");
+    inputDiv.setAttribute("class", "input-group");
+    inputDiv.setAttribute("id", "add-tag-input-" + tagInputCount);
+    let inputElement = document.createElement("input");
+    inputElement.setAttribute("class", "form-control add-tag-input");
 
-  const addTag = (e) => {
-    updateTags([...tags, tagInput]);
-    let collapse = new Collapse(document.getElementById("tagContainer"));
-    collapse.hide();
-    resetFormState();
-    window.location.reload();
-  }
+    let appendDiv = document.createElement("div");
+    appendDiv.setAttribute("class", "input-group-append");
+    let img = document.createElement("img");
+    img.setAttribute("src", cancelIcon);
+    img.addEventListener("click", function() {
+      document.querySelector("#add-tag-input-" + tagInputCount).remove()
+    });
+    appendDiv.appendChild(img);
 
-  const removeTag = (e) => {
-    let tag = e.target.id;
-    updateTags(tags.filter(t => t != tag));
+    inputDiv.appendChild(inputElement);
+    inputDiv.appendChild(appendDiv);
+
+    setTagInputCount(tagInputCount + 1);
+    document.querySelector("#addTagContainer").appendChild(inputDiv);
   }
 
   const resetFormState = () => {
-    setTagInput("");
-    document.getElementById("tagInput").value = "";
-    let imgElements = document.querySelectorAll(".badgeImg");
-    for(let item of imgElements) {
-      item.setAttribute("src", removeIcon);
+    setTagInputCount(0);
+    document.querySelector("#addTagContainer").innerHTML = "";
+    let checkBoxElements = document.querySelectorAll(".remove-tag-input");
+    for(let c of checkBoxElements) {
+      c.checked = false;
     }
+  }
+
+  const submitTag = () => {
+    let newTagInput = document.querySelectorAll(".add-tag-input");
+    let newTag = [];
+    for(let c of newTagInput) {
+      if(c.value != "" && tags.indexOf(c.value) == -1) {
+        newTag.push(c.value);
+      }
+    }
+
+    let removeTagInput = document.querySelectorAll(".remove-tag-input");
+    let removeTag = [];
+    for(let c of removeTagInput) {
+      if(c.checked) {
+        removeTag.push(c.value);
+      }
+    }
+
+    let updatedTag = tags.filter(t => removeTag.indexOf(t) == -1);
+    updatedTag = updatedTag.concat(newTag);
+    updateTags(updatedTag);
+
+    let collapse = new Collapse(document.getElementById("tagContainer"));
+    collapse.hide();
+    resetFormState();
   }
 
   const onToggle = (e) => {
@@ -41,19 +71,24 @@ const ManageTag = ({ tags, updateTags }) => {
 
   return (
     <div>
-      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#tagContainer" aria-expanded="false" aria-controls="tagContainer" onClick={onToggle}>
+      <button class="btn btn-primary toggle-btn" id="tagCollapseBtn" type="button" data-toggle="collapse" data-target="#tagContainer" aria-expanded="false" aria-controls="tagContainer" onClick={onToggle}>
         Manage Tags
       </button>
 
       <div class="collapse" id="tagContainer">
-        <div class="form-group">
-          <label>Tags</label>
-          <input class="form-control" id="tagInput" onChange={handleChange}/>
+        <button type="button" class="btn primary-btn" onClick={addTag}>Add Tag</button>
+        <div id="addTagContainer"></div>
+        <label id="tagLabel">Tags</label>
+        <div id="tagList">
+          {
+            tags.map((t, id) => 
+            <div class="form-check">
+              <input class="form-check-input remove-tag-input" type="checkbox" value={t} />
+              <label class="form-check-label">{t}</label>
+            </div>)
+          }
         </div>
-        <button type="button" class="btn primary-btn" onClick={addTag}>Add</button>
-        {
-          tags.map((t, id) => <TagBadge key={id} tag={t} showAdd={false} handleTagChange={removeTag}/>)
-        }
+        <button type="button" class="btn primary-btn" onClick={submitTag}>Save Changes</button>
       </div>
     </div>
   );
