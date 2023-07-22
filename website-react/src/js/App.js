@@ -7,7 +7,6 @@ import HomePage from './HomePage.js';
 import FlashCardPage from './FlashCardPage.js';
 import WordListPage from './WordListPage.js';
 import GamePage from './GamePage.js';
-import StatisticsPage from './StatisticsPage.js';
 import '../css/App.css';
 
 function LastLocationProvider({ children }) {
@@ -130,7 +129,6 @@ function App() {
             <Route exact path="/" element={<HomePage words={words} />} />
             <Route exact path="/word-list" element={<WordListPage words={words} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} onAddWord={handleAddWord} tags={tags} updateTags={handleUpdateTag} />} />
             <Route exact path="/games" element={<GamePage words={words} />} />
-            <Route exact path="/statistics" element={<StatisticsPage />} />
           </Routes>
         </LastLocationProvider>
       </Router>
@@ -196,9 +194,6 @@ const InputListener = ({ words, setWords, onUpdateWord, onDeleteWord, tags, setT
       </div>
       <div id="game-page-container">
         <GamePage words={words}></GamePage>
-      </div>
-      <div id="statistics-page-container">
-        <StatisticsPage />
       </div>
     </div>
   );

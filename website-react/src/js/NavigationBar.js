@@ -53,12 +53,6 @@ const Navbar = () => {
         >
           Games
         </NavLink>
-        <NavLink
-          onClick={() => window.scrollTo(0, 0)}
-          to="/statistics"
-        >
-          Statistics
-        </NavLink>
       </div>
     </nav>
   );
