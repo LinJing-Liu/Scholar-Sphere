@@ -16,6 +16,9 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, tags }) => {
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const filteredWords = words.filter(word =>
     (
