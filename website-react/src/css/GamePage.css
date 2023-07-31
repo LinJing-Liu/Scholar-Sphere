@@ -1,20 +1,132 @@
-.crossword-game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+#game-page-container {
+    margin: 0;
+    padding: 0;
 }
-
-.crossword-table {
+#game-page-header {
+    background-color: #e0eeff;
+    margin: 0;
+    padding: 10rem 0rem;
+    padding-top: 13rem;
+}
+#gamePageHeading {
+    font-size: 5rem;
+    text-transform: uppercase;
+    font-weight: 300;
+    color: #8d61e6;
+}
+#gamePageSubheading {
+    font-weight: 200;
+    word-spacing: 0.50rem;
+    color: #8d61e6;
+}
+.gameTileHeading, .mcTileHeading {
+    font-size: 2rem;
+    font-weight: 300;
+    background-color: #8d61e6;
+    color: white;
     display: inline-block;
-
+    padding: 5px 50px;
+    border-radius: 15px;
+    margin-top: 30px;
 }
-
+.scoreTile {
+    margin-top: 20px;
+}
+.scoreTile .badge {
+    font-weight: 400;
+    font-size: 1rem;
+    color: #673bbe;
+}
+.scoreTile img {
+    max-width: 30px;
+}
+.typeWordContainer {
+    background-color: #bbf4e8;
+    margin: 3rem;
+    border-radius: 20px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.questionTile {
+    font-size: 1rem;
+    color: #673bbe;
+}
+.typeWordForm .form-control {
+    max-width: 40%;
+    font-size: 1rem;
+    display: inline-flex;
+}
+.typeWordSubmitBtn {
+    background-color: white;
+    color: #8d61e6;
+    border: 2px solid #8d61e6;
+    font-size: 1rem;
+    margin: 30px 10px;
+    display: inline-flex;
+}
+.typeWordSubmitBtn:hover {
+    background-color: #8d61e6;
+    color: white;
+    border: 2px solid #8d61e6;
+}
+.crossword-game-container {
+    background-color: #e0eeff;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+    padding: 3rem;
+}
+.crosswordHeading {
+    font-weight: 300;
+    margin-bottom: 2rem;
+    color: #8d61e6;
+}
+.clueHeading {
+    font-weight: 300;
+    align-items: baseline;
+    margin: 0;
+    padding: 0;
+    color: #8d61e6;
+    padding-bottom: 1rem;
+    display: flex;
+    margin-left: 2rem;
+}
+.crosswordWinner {
+    margin-top: 2rem;
+    color: #8d61e6;
+    font-weight: 300;
+}
+.crossword-table {
+    padding: 0;
+    margin: 0;
+}
+.crossword-table .row {
+    float: right;
+    margin-right: 1rem;
+}
+.multipleChoiceContainer {
+    background-color: rgb(138, 84, 245);
+    color: white;
+    border-radius: 20px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 30px;
+}
+.mcTileHeading {
+    background-color: rgba(255, 255, 255, 0);
+}
+.mcQuestionTile {
+    font-size: 1rem;
+    margin-top: 1rem;
+}
 .row {
     display: flex;
 }
-
 .cell {
     position: relative;
     width: 30px;
@@ -23,25 +135,27 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.5rem;
+    min-width: 40px;
+    min-height: 40px;
+    max-width: 60px;
+    max-height: 60px;
 }
-
 .cell-black {
     background-color: black;
 }
-
 .cell-white {
     background-color: white;
 }
-
 .cell-number {
     position: absolute;
-    top: -30px;
+    top: -45px;
     /* Adjust as necessary */
-    left: -30px;
+    left: -40px;
     /* Adjust as necessary */
-    font-size: 10px;
+    font-size: 1rem;
+    font-weight: 300;
 }
-
 .cell-input {
     width: 100%;
     height: 100%;
@@ -50,4 +164,48 @@
     text-align: center;
     background: transparent;
     outline: none;
+}
+.crosswordClueContainer {
+    align-items: baseline;
+    margin: 0;
+    padding: 0;
+}
+.clueList li {
+    display: flex;
+    margin: 0.5rem 3rem;
+    padding: 0;
+    align-items: baseline;
+    font-size: 1rem;
+}
+.choices-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    margin-top: 15px;
+}
+.choice {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    padding: 15px;
+    border: 2px solid white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.3s ease-in-out;
+    text-align: center;
+    width: 150px;
+    height: 80px;
+    font-size: 1rem;
+}
+.choice:active {
+    border-color: red;
+    border-color: #00ff08;
+}
+.wrong {
+    border-color: red;
+}
+.correct {
+    border-color: #00ff08;
 }
