@@ -14,7 +14,7 @@ const HomePage = ({ words }) => {
           <div className='welcome-wrapper'>
             <Welcome />
           </div>
-          <div className="arrow"></div>
+          <div className="arrow" onClick={() => {window.location.href="/#flashcards"}}></div>
         </div>
 
       </div>

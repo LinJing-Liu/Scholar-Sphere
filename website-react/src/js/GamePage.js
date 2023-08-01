@@ -19,7 +19,16 @@ const GamePage = ({ words }) => {
 
       <TypeWord words={words} />
       <MultipleChoice words={words} />
-      <CrosswordSkeleton words={words} ></CrosswordSkeleton>
+      {words.length > 1 ? <CrosswordSkeleton words={words} />
+      :
+        <div className="crossword-game-container">
+          <h1 class="crosswordHeading">Crossword Game</h1>
+          <div class="crosswordWordNotice">
+            Crossword can be played only when there are at least two words.
+            <a onClick={() => window.location.href="/word-list"}>Go to word list page to add word.</a>
+          </div>
+        </div>
+      }
     </div>
 
   </div>;

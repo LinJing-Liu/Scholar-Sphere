@@ -199,6 +199,10 @@
     height: 80px;
     font-size: 1rem;
 }
+.choice:hover {
+    background-color: rgba(255, 255, 255);
+    color: rgb(138, 84, 245);
+}
 .choice:active {
     border-color: red;
     border-color: #00ff08;
@@ -208,4 +212,15 @@
 }
 .correct {
     border-color: #00ff08;
+}
+.crosswordWordNotice {
+    padding: 1rem;
+    font-size: 1.5rem;
+    color: black;
+    font-weight: 300;
+}
+.crosswordWordNotice a {
+    display: block;
+    color: rgb(138, 84, 245)!important;
+    text-decoration: underline!important;
 }

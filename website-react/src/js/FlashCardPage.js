@@ -9,7 +9,6 @@ const FlashCardPage = ({ words }) => {
     start flashcards
     <FlashCards words={words}></FlashCards>
     end flashcards
-    <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
   </div>;
 };
 
@@ -46,10 +45,19 @@ function FlashCards({ words }) {
   return (
     <div>
       <h1 id="flashcardsHeading">Flashcards</h1>
-      <FlashCard data={currentCard} />
-      <p>
-        {currentIndex + 1} out of {words.length}
-      </p>
+      {currentCard ? 
+        <div>
+          <FlashCard data={currentCard} />
+          <p>
+            {currentIndex + 1} out of {words.length}
+          </p>
+        </div>
+      : <div id="addWordNotice">
+          Add word to start using flashcards.
+          <br />
+          <a onClick={() => window.location.href="/word-list"}>Go to word list page to add word.</a>
+        </div>
+      }
     </div>
   );
 }
