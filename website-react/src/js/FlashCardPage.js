@@ -29,7 +29,6 @@ const FlashCardPage = ({ words, tags }) => {
     </div>
     <FlashCards words={filteredWords}></FlashCards>
     end flashcards
-    <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
   </div>;
 };
 
@@ -67,10 +66,20 @@ function FlashCards({ words }) {
 
   return (
     <div>
-      {isEmpty ? <div> <p>no words match your filters</p></div> : <div><FlashCard data={currentCard} />
-        <p>
-          {currentIndex + 1} out of {words.length}
-        </p> </div>}
+      <h1 id="flashcardsHeading">Flashcards</h1>
+      {currentCard ? 
+        <div>
+          <FlashCard data={currentCard} />
+          <p>
+            {currentIndex + 1} out of {words.length}
+          </p>
+        </div>
+      : <div id="addWordNotice">
+          Add word to start using flashcards.
+          <br />
+          <a onClick={() => window.location.href="/word-list"}>Go to word list page to add word.</a>
+        </div>
+      }
 
     </div>
   );

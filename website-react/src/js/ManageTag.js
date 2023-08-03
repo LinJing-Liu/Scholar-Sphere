@@ -78,7 +78,7 @@ const ManageTag = ({ tags, updateTags }) => {
       <div class="collapse" id="tagContainer">
         <button type="button" class="btn primary-btn" onClick={addTag}>Add Tag</button>
         <div id="addTagContainer"></div>
-        <label id="tagLabel">Tags</label>
+        <label id="tagLabel">Tags (Select to Delete)</label>
         <div id="tagList">
           {
             tags.map((t, id) => 
