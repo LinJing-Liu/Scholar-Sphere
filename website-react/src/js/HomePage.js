@@ -5,7 +5,7 @@ import Navbar from './NavigationBar';
 import FlashCardPage from './FlashCardPage.js';
 import '../css/HomePage.css';
 
-const HomePage = ({ words }) => {
+const HomePage = ({ words, tags }) => {
   return (
     <div>
       <Navbar />
@@ -20,7 +20,7 @@ const HomePage = ({ words }) => {
       </div>
 
       <div id="flashcards">
-        <FlashCardPage words={words} />
+        <FlashCardPage words={words} tags={tags} />
       </div>
     </div>
   );

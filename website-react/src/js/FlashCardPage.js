@@ -1,13 +1,33 @@
 import React, { useEffect, useState } from 'react';
-
+import FilterDropdown from './FilterDropdown';
 import io from 'socket.io-client';
 
 import '../css/FlashCardPage.css';
 
-const FlashCardPage = ({ words }) => {
+const FlashCardPage = ({ words, tags }) => {
+  const [tagSelected, setTagSelected] = useState([]);
+  const [confidenceSelected, setConfidenceSelected] = useState([]);
+
+  const filteredWords = words.filter(word =>
+    (confidenceSelected.includes(word.confidence) || confidenceSelected.length == 0)
+    && (word.tag.filter(t => tagSelected.includes(t)).length > 0 || tagSelected.length == 0)
+  );
   return <div id="flash-card-page-container">
     start flashcards
-    <FlashCards words={words}></FlashCards>
+    <br></br>
+    <h1 id="flashcardsHeading">Flashcards</h1>
+    <div id="filterContainer">
+      <div id="filterHeading">Filters</div>
+      <div class="row">
+        <div class="col">
+          <FilterDropdown display="Tags" label="tags" options={tags} selection={tagSelected} onSelect={setTagSelected} />
+        </div>
+        <div class="col">
+          <FilterDropdown display="Confidence Level" label="confidence-level" options={["1", "2", "3", "4", "5"]} selection={confidenceSelected} onSelect={setConfidenceSelected} />
+        </div>
+      </div>
+    </div>
+    <FlashCards words={filteredWords}></FlashCards>
     end flashcards
   </div>;
 };
@@ -16,6 +36,8 @@ const FlashCardPage = ({ words }) => {
 function FlashCards({ words }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const isEmpty = (words.length === 0)
+  console.log(words, currentIndex, isEmpty)
   useEffect(() => {
     const handleKeyDown = (e) => {
       // This line prevents the default action (scrolling) from occurring
@@ -58,6 +80,7 @@ function FlashCards({ words }) {
           <a onClick={() => window.location.href="/word-list"}>Go to word list page to add word.</a>
         </div>
       }
+
     </div>
   );
 }
