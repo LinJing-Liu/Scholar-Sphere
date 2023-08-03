@@ -33,6 +33,20 @@ document.addEventListener("DOMContentLoaded", function () {
   onLoad(true);
 });
 
+
+document.getElementById('intervalForm').addEventListener('submit', function (event) {
+  event.preventDefault();
+  let minutes = parseFloat(document.getElementById('minutes').value);
+  if (isNaN(minutes)) {
+    console.error('Invalid minutes:', document.getElementById('minutes').value);
+    return;
+  }
+
+  console.log('Sending message:', minutes);
+  chrome.runtime.sendMessage({ minutes: minutes });
+});
+
+
 function onLoad(b) {
   fromPopup = b;
 
@@ -47,7 +61,7 @@ function onLoad(b) {
   CUSTOMINVLIST = document.getElementById("customTagList");
   REQUIREFIELDNOTICE = document.getElementById("requireFieldNotice");
   NEWTAGINPUT = document.getElementById("newTagInput");
-  
+
   document.getElementById("addTagButton").addEventListener("click", addTag);
   document.getElementById("addWordButton").addEventListener("click", addWord);
 
@@ -146,9 +160,9 @@ function addTag(e) {
   e.preventDefault();
 
   let newTag = NEWTAGINPUT.value;
-  if(newTag == "" || tags.indexOf(newTag) >= 0) { 
+  if (newTag == "" || tags.indexOf(newTag) >= 0) {
     NEWTAGINPUT.value = "";
-    return; 
+    return;
   }
 
   createSingleTag(newTag, CUSTOMADDEDLIST, REMOVEICON);
@@ -160,7 +174,7 @@ function addTag(e) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({tag: newTag}),
+    body: JSON.stringify({ tag: newTag }),
   })
     .then(response => response.json())
     .then(data => {
@@ -181,7 +195,7 @@ function resetFormFields() {
   CONFIDENCEARANGE.value = 3;
   PICTUREINPUTELE.value = "";
 
-  while(CUSTOMADDEDLIST.childNodes.length > 0) {
+  while (CUSTOMADDEDLIST.childNodes.length > 0) {
     var c = CUSTOMADDEDLIST.childNodes[0];
     var id = c.id;
     var imgElement = document.getElementById(id.substring(0, id.indexOf("List")) + "Img");
@@ -196,7 +210,7 @@ function addWord(e) {
   e.preventDefault();
 
   const source = fromPopup ? "manual" : "automatic";
-  if(WORDINPUTELE.value == "") {
+  if (WORDINPUTELE.value == "") {
     REQUIREFIELDNOTICE.setAttribute("style", "display: inline");
     return;
   }
