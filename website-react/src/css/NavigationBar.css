@@ -41,13 +41,12 @@
     color: white;
 }
 
-.navbar-right a,
-.navbar-right Link {
+.navbar-right a {
     margin-left: 25px;
-    color: #ffffff;
+    color: #ffffff!important;
     text-decoration: none;
 }
 
 .navbar-right a:hover {
-    color: #417676;
+    color: #417676!important;
 }
