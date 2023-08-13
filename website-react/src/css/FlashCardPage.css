@@ -188,3 +188,33 @@
     background-color: #f77569;
     border: 2px solid #f77569;
 }
+
+
+.selected-filter {
+    display: inline-block;
+    position: relative;
+}
+
+.remove-filter-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid black;
+    cursor: pointer;
+    padding: 2px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    visibility: hidden;
+}
+
+.cardTagsBadge:hover+.remove-filter-btn,
+.cardConfidenceLevelBadge:hover+.remove-filter-btn,
+.remove-filter-btn:hover {
+    visibility: visible;
+}

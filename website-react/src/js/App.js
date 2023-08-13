@@ -15,7 +15,7 @@ function App() {
   const [tags, setTags] = useState(() => {
     var savedTags = localStorage.getItem("tags");
     savedTags = savedTags ? JSON.parse(savedTags) : [];
-    if(savedTags.indexOf("starred") == -1) {
+    if (savedTags.indexOf("starred") == -1) {
       savedTags.push("starred");
       localStorage.setItem("tags", JSON.stringify(savedTags));
     }
@@ -43,6 +43,7 @@ function App() {
     let newWords = [...words, word];
     setWords(newWords);
     localStorage.setItem("words", JSON.stringify(newWords));
+    console.log(newWords)
   }
 
   const handleUpdateAllWords = (updatedWords) => {

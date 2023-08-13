@@ -43,6 +43,7 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
   const [searchTerm, setSearchTerm] = useState("");
   const [tagSelected, setTagSelected] = useState(tags);
   const [confidenceSelected, setConfidenceSelected] = useState(allConfidence);
+  const [simpleView, setSimpleView] = useState(false);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -107,22 +108,47 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
               <div class="col">
                 <ManageTag tags={tags} updateTags={updateTags} />
               </div>
+
             </div>
+            <button onClick={() => setSimpleView(!simpleView)}>
+              Show {simpleView ? 'Detailed' : 'Simple'} View
+            </button>
           </div>
         </div>
 
         <div id="word-list-page-content">
-          <WordList words={filteredWords} searchTerm={searchTerm} onUpdateWord={onUpdateWord} onDeleteWord={onDeleteWord} tags={tags} />
+          <WordList words={filteredWords} searchTerm={searchTerm} onUpdateWord={onUpdateWord} onDeleteWord={onDeleteWord} tags={tags} simpleView={simpleView} />
         </div>
       </div>
     </div>
   );
 };
-function WordList({ words, searchTerm, onUpdateWord, onDeleteWord, tags }) {
+function WordList({ words, searchTerm, onUpdateWord, onDeleteWord, tags, simpleView }) {
+  if (simpleView) {
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Word</th>
+            <th>Definition</th>
+          </tr>
+        </thead>
+        <tbody>
+          {words.map((word, index) => (
+            <tr key={index}>
+              <td>{word.word}</td>
+              <td>{word.definition}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
   return (
     <div className="word-list">
       <div className="word-grid">
-        {words?.map((word, index) => (
+        {words.map((word, index) => (
           <Word
             key={index}
             data={word}

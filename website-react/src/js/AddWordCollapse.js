@@ -18,10 +18,10 @@ const emptyWord = {
 const AddWordCollapse = ({ tags, onAddWord, words }) => {
   const [tempWord, setTempWord] = useState(emptyWord);
 
-  const handleSubmit = (e) =>  {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const sameWord = words.filter(w => w.toString().toLowerCase() == tempWord.toString().toLowerCase());
-    if(sameWord.length > 0) {
+    const sameWord = words.filter(w => w.word.toString().toLowerCase() == tempWord.word.toString().toLowerCase());
+    if (sameWord.length > 0) {
       alert("This word is already in the list!");
       return;
     }
@@ -30,14 +30,14 @@ const AddWordCollapse = ({ tags, onAddWord, words }) => {
   }
 
   const resetFormState = (hideCollapse) => {
-    if(hideCollapse) {
+    if (hideCollapse) {
       let collapse = new Collapse(document.getElementById("addWordContainer"));
       collapse.hide();
     }
     setTempWord(emptyWord);
     document.querySelector("#addWordForm").reset();
     let imgElements = document.querySelectorAll(".badgeImg");
-    for(let item of imgElements) {
+    for (let item of imgElements) {
       item.setAttribute("src", addIcon);
     }
   }
@@ -45,7 +45,7 @@ const AddWordCollapse = ({ tags, onAddWord, words }) => {
   const onToggle = (e) => {
     e.preventDefault();
     let hidingCollapse = document.getElementById("addWordCollpaseBtn").ariaExpanded;
-    if(hidingCollapse) {
+    if (hidingCollapse) {
       resetFormState(false);
     }
   }
@@ -63,7 +63,7 @@ const AddWordCollapse = ({ tags, onAddWord, words }) => {
 
       <div class="collapse" id="addWordContainer">
         <form id="addWordForm">
-            <AddWordForm customClass="addWordForm" tags={tags} formColor={"white"} word={tempWord} setWord={setTempWord} handleSave={handleSubmit} handleCancel={cancelForm}/>
+          <AddWordForm customClass="addWordForm" tags={tags} formColor={"white"} word={tempWord} setWord={setTempWord} handleSave={handleSubmit} handleCancel={cancelForm} />
         </form>
       </div>
     </div>
