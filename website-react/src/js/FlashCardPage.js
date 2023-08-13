@@ -14,7 +14,7 @@ const FlashCardPage = ({ words, tags }) => {
   const filteredWords = words.filter(word =>
     confidenceSelected.includes(word.confidence)
     && (word.tag.filter(t => tagSelected.includes(t)).length > 0
-    || (tagSelected.length == tags.length && word.tag.length == 0))
+      || (tagSelected.length == tags.length && word.tag.length == 0))
   );
 
   const [frontSelected, setFrontSelected] = useState(["Word"]);
@@ -24,7 +24,7 @@ const FlashCardPage = ({ words, tags }) => {
     <br></br>
     <h1 id="flashcardsHeading">
       Flashcards
-      <img src={helpIcon} data-toggle="modal" data-target="#helpModalCenter" id="cardHelpBtn"/>
+      <img src={helpIcon} data-toggle="modal" data-target="#helpModalCenter" id="cardHelpBtn" />
     </h1>
     <FlashcardHelpModal />
 
@@ -44,7 +44,7 @@ const FlashCardPage = ({ words, tags }) => {
       <div id="cardFilterHeading">Filters</div>
       <div class="row">
         <div class="col">
-          <FilterDropdown display="Tags" label="cardTags" options={tags} selection={tagSelected} onSelect={setTagSelected}/>
+          <FilterDropdown display="Tags" label="cardTags" options={tags} selection={tagSelected} onSelect={setTagSelected} />
         </div>
         <div class="col">
           <FilterDropdown display="Confidence Level" label="cardConfidenceLevel" options={allConfidence} selection={confidenceSelected} onSelect={setConfidenceSelected} />
@@ -87,31 +87,40 @@ function FlashCards({ words, front, back }) {
 
   return (
     <div>
-      {!isEmpty ? 
+      {!isEmpty ?
         <div>
-          <FlashCard data={currentCard} front={front} back={back} />
+          <FlashCard data={currentCard} front={front} back={back} currentIndex={currentIndex} />
           <p className="cardCountLabel">
             {currentIndex + 1} out of {words.length}
           </p>
         </div>
-      : <div id="addWordNotice">
+        : <div id="addWordNotice">
           There is no word in the inventory or the filters have filtered out all words.
           <br />
-          <a onClick={() => window.location.href="/word-list"}>Go to word list page to add word.</a>
+          <a onClick={() => window.location.href = "/word-list"}>Go to word list page to add word.</a>
         </div>
       }
     </div>
   );
 }
 
-const FlashCard = ({ data, front, back }) => {
+const FlashCard = ({ data, front, back, currentIndex }) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  
+  const [disableAnimation, setDisableAnimation] = useState(false);
+
+  useEffect(() => {
+    setIsFlipped(false);
+  }, [currentIndex]);
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         setIsFlipped((prev) => !prev);
+        setDisableAnimation(false);
       }
+      else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        setDisableAnimation(true); // Disable animation for up and down
+      }
+
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -126,14 +135,14 @@ const FlashCard = ({ data, front, back }) => {
   function getDisplay(displayArr) {
     // current content type - Word, Definition, Explanation, Example
     var display = [];
-    for(var displayType of displayArr) {
-      if(displayType == "Word") {
+    for (var displayType of displayArr) {
+      if (displayType == "Word") {
         display.push(data.word);
-      } else if(displayType == "Definition") {
+      } else if (displayType == "Definition") {
         display.push("Definition: " + data.definition);
       } else if (displayType == "Explanation") {
         display.push("Explanation: " + data.explanation);
-      } else if(displayType == "Example") {
+      } else if (displayType == "Example") {
         display.push("Example: " + data.example);
       }
     }
@@ -143,7 +152,7 @@ const FlashCard = ({ data, front, back }) => {
 
   return (
     <div className="flashcard-container">
-      <div className={`flashcard ${isFlipped ? 'flashcard-flipped' : ''}`} onClick={toggleFlip}>
+      <div className={`flashcard ${isFlipped ? 'flashcard-flipped' : ''} ${disableAnimation ? 'no-animation' : ''}`} onClick={toggleFlip}>
         <div className="flashcard-side flashcard-front">
           {/* Front of the card */}
           <div className="flashcard-content">

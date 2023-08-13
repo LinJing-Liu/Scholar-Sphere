@@ -5,24 +5,24 @@ import removeIcon from '../img/removeIcon.png';
 
 const AddWordForm = ({ tags, customClass, formColor, word, setWord, handleSave, handleCancel }) => {
 	const handleChange = (event) => {
-    	setWord({ ...word, [event.target.name]: event.target.value });
-  	}
+		setWord({ ...word, [event.target.name]: event.target.value });
+	}
 
 	const handleTagChange = (event) => {
 		let newWord = word;
 		let tag = event.target.id;
-		if(newWord.tag.indexOf(tag) != -1) {
+		if (newWord.tag.indexOf(tag) != -1) {
 			newWord.tag = newWord.tag.filter(t => t != tag);
 		} else {
 			newWord.tag.push(tag);
 		}
-		if(event.target.src == addIcon) {
+		if (event.target.src == addIcon) {
 			event.target.setAttribute("src", removeIcon);
 		} else {
 			event.target.setAttribute("src", addIcon);
 		}
 		setWord(newWord);
-  	}
+	}
 
 	return (
 		<div className={"word-item " + customClass} style={{ backgroundColor: formColor }}>
@@ -56,14 +56,12 @@ const AddWordForm = ({ tags, customClass, formColor, word, setWord, handleSave, 
 				<label>Tags</label>
 				<div class="add-tag-section">
 					{
-						word.tag && 
-						word.tag.filter(t => t != "starred").map((t, id) => <TagBadge key={id} tag={t} showAdd={false} handleTagChange={handleTagChange} />)
+						word.tag?.filter(t => t != "starred").map((t, id) => <TagBadge key={id} tag={t} showAdd={false} handleTagChange={handleTagChange} />)
 					}
 				</div>
 				<div class="remove-tag-section">
 					{
-						tags &&
-						tags.filter(t => word.tag.indexOf(t) == -1 && t != "starred").map((t, id) => <TagBadge key={id} tag={t} showAdd={true} handleTagChange={handleTagChange} />)
+						tags?.filter(t => word.tag.indexOf(t) == -1 && t != "starred").map((t, id) => <TagBadge key={id} tag={t} showAdd={true} handleTagChange={handleTagChange} />)
 					}
 				</div>
 			</div>

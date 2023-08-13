@@ -332,7 +332,7 @@ const MultipleChoice = ({ words }) => {
           : (
             <React.Fragment>
               <div class="mcQuestionTile">
-                Word: {selectedWord && selectedWord.word}
+                Word: {selectedWord?.word}
                 <div>Select the correct definition:</div>
               </div>
               <div className="choices-container">

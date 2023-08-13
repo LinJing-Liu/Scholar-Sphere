@@ -16,23 +16,23 @@ import ManageTag from './ManageTag';
 
 const confidenceColor = [
   {
-    background: "#ffd0ca", 
+    background: "#ffd0ca",
     badge: "rgb(255, 114, 114)"
   },
   {
-    background: "#ffddc7", 
+    background: "#ffddc7",
     badge: "orange"
   },
   {
-    background: "#fff6d0c9", 
+    background: "#fff6d0c9",
     badge: "hsl(57, 100%, 54%)"
   },
   {
-    background: "#edffd7", 
+    background: "#edffd7",
     badge: "rgb(177, 251, 74)"
   },
   {
-    background: "#d3ffda", 
+    background: "#d3ffda",
     badge: "rgb(37, 206, 37)"
   }
 ]
@@ -53,11 +53,11 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
 
   const filteredWords = words.filter(word =>
     (
-      (word.word && word.word.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (word.definition && word.definition.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (word.explanation && word.explanation.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (word.example && word.example.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (word.tags && word.tags.toLowerCase().includes(searchTerm.toLowerCase()))
+      word.word?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      word.definition?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      word.explanation?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      word.example?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      word.tags?.toLowerCase().includes(searchTerm.toLowerCase())
     ) && (confidenceSelected.includes(word.confidence) || confidenceSelected.length == 0)
     && ((word.tag.length == 0 && tagSelected.length == tags.length)
       || word.tag.filter(t => tagSelected.includes(t)).length > 0 || tagSelected.length == 0)
@@ -90,10 +90,10 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
             <div id="filterHeading">Filters</div>
             <div class="row">
               <div class="col">
-                <FilterDropdown display="Tags" label="tags" options={tags} selection={tagSelected} onSelect={setTagSelected}/>
+                <FilterDropdown display="Tags" label="tags" options={tags} selection={tagSelected} onSelect={setTagSelected} />
               </div>
               <div class="col">
-                <FilterDropdown display="Confidence Level" label="confidence-level" options={allConfidence} selection={confidenceSelected} onSelect={setConfidenceSelected}/>
+                <FilterDropdown display="Confidence Level" label="confidence-level" options={allConfidence} selection={confidenceSelected} onSelect={setConfidenceSelected} />
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
                 <AddWordCollapse tags={tags} onAddWord={onAddWord} words={words} />
               </div>
               <div class="col">
-                <ManageTag tags={tags} updateTags={updateTags}/>
+                <ManageTag tags={tags} updateTags={updateTags} />
               </div>
             </div>
           </div>
@@ -122,8 +122,15 @@ function WordList({ words, searchTerm, onUpdateWord, onDeleteWord, tags }) {
   return (
     <div className="word-list">
       <div className="word-grid">
-        {words && words.map((word, index) => (
-          <Word key={index} data={word} searchTerm={searchTerm} onUpdateWord={(updatedWord) => onUpdateWord(updatedWord, index)} onDeleteWord={() => onDeleteWord(index)} tags={tags} />
+        {words?.map((word, index) => (
+          <Word
+            key={index}
+            data={word}
+            searchTerm={searchTerm}
+            onUpdateWord={(updatedWord) => onUpdateWord(updatedWord, index)}
+            onDeleteWord={() => onDeleteWord(index)}
+            tags={tags}
+          />
         ))}
       </div>
     </div>
@@ -148,7 +155,7 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord, tags }) {
   const handleDelete = () => {
     // Call the function passed from the parent component
     const res = window.confirm("Are you sure you want to delete this word?");
-    if(res) onDeleteWord();
+    if (res) onDeleteWord();
   };
 
   const handleEdit = () => {
@@ -170,7 +177,7 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord, tags }) {
 
   const toggleStar = () => {
     let updateWord = data;
-    if(updateWord.tag.indexOf("starred") != -1) {
+    if (updateWord.tag.indexOf("starred") != -1) {
       updateWord.tag = updateWord.tag.filter(tag => tag != "starred");
     } else {
       updateWord.tag.push("starred");
@@ -178,8 +185,8 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord, tags }) {
     onUpdateWord(updateWord);
   }
 
-  if(editing) {
-    return (<AddWordForm tags={tags} customClass="edit-form" formColor={confidenceColor[data.confidence - 1].background} word={tempData} setWord={setTempData} handleSave={handleSave} handleCancel={handleCancelEdit} />);  
+  if (editing) {
+    return (<AddWordForm tags={tags} customClass="edit-form" formColor={confidenceColor[data.confidence - 1].background} word={tempData} setWord={setTempData} handleSave={handleSave} handleCancel={handleCancelEdit} />);
   }
 
   const word = highlightText(data.word);
@@ -196,8 +203,8 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord, tags }) {
         <div class="col-3">
           {
             data.tag.indexOf("starred") != -1 ?
-            <img src={filledStarIcon} onClick={() => toggleStar()}/> :
-            <img src={starIcon} onClick={() => toggleStar()}/>
+              <img src={filledStarIcon} onClick={() => toggleStar()} /> :
+              <img src={starIcon} onClick={() => toggleStar()} />
           }
         </div>
       </div>
@@ -207,7 +214,7 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord, tags }) {
       <p class="word-example"><label>Example</label> <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(example) }}></span></p>
 
       <p class="word-tags">
-        {data.tag && data.tag.filter(t => t != "starred").map((t, id) => <span class="badge tag-badge" key={id}>{t}</span>)}
+        {data.tag?.filter(t => t != "starred").map((t, id) => <span class="badge tag-badge" key={id}>{t}</span>)}
       </p>
 
       <p class="word-picture-container">
@@ -215,7 +222,7 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord, tags }) {
       </p>
 
       <button type="button" class="btn primary-btn word-button edit-button" onClick={handleEdit}>
-        <img src={editIcon} /> Edit 
+        <img src={editIcon} /> Edit
       </button>
       <button type="button" class="btn primary-btn word-button delete-button" onClick={handleDelete}>
         <img src={deleteIcon} /> Delete
