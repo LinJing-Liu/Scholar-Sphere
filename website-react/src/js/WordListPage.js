@@ -99,7 +99,7 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
           <div id="controlContainer">
             <div class="row">
               <div class="col">
-                <AddWordCollapse tags={tags} onAddWord={onAddWord} />
+                <AddWordCollapse tags={tags} onAddWord={onAddWord} words={words} />
               </div>
               <div class="col">
                 <ManageTag tags={tags} updateTags={updateTags}/>
@@ -144,7 +144,8 @@ function Word({ data, searchTerm, onUpdateWord, onDeleteWord, tags }) {
 
   const handleDelete = () => {
     // Call the function passed from the parent component
-    onDeleteWord();
+    const res = window.confirm("Are you sure you want to delete this word?");
+    if(res) onDeleteWord();
   };
 
   const handleEdit = () => {

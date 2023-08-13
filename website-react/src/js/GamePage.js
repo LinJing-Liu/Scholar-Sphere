@@ -6,30 +6,30 @@ import clg from 'crossword-layout-generator';
 
 import Navbar from './NavigationBar';
 import '../css/GamePage.css';
+import rewardIcon from '../img/reward.png';
 
 const GamePage = ({ words }) => {
-  const testjson = [
-    {
-      "word": "abcd",
-      "clue": "first 4 letters of the alphabet"
-    },
-    {
-      "word": "efgh",
-      "clue": "next 4 letters of the alphabet"
-    },
-    // more word objects...
-  ]
-  //<CrosswordComponent words={testjson} ></CrosswordComponent>
+
   return <div>
     <Navbar />
-    <div className='game-page-container'>
-      Start GamesPage
+    <div className="game-page-container" id="game-page-container">
+      <div id="game-page-header">
+        <h1 id="gamePageHeading">Games</h1>
+        <h2 id="gamePageSubheading">Play. Learn. Have Fun.</h2>
+      </div>
+
       <TypeWord words={words} />
       <MultipleChoice words={words} />
-
-      <CrosswordSkeleton words={words} ></CrosswordSkeleton>
-
-      End GamesPage
+      {words.length > 1 ? <CrosswordSkeleton words={words} />
+        :
+        <div className="crossword-game-container">
+          <h1 class="crosswordHeading">Crossword Game</h1>
+          <div class="crosswordWordNotice">
+            Crossword can be played only when there are at least two words.
+            <a onClick={() => window.location.href = "/word-list"}>Go to word list page to add word.</a>
+          </div>
+        </div>
+      }
     </div>
 
   </div>;
@@ -39,7 +39,7 @@ function TypeWord({ words }) {
   const [currentWord, setCurrentWord] = useState({});
   const [score, setScore] = useState(0);
   const [inputWord, setInputWord] = useState('');
-
+  const isEmpty = (words.length === 0)
   // Initialize game with random word
   React.useEffect(() => {
     chooseRandomWord();
@@ -68,21 +68,40 @@ function TypeWord({ words }) {
   }
 
   return (
-    <div>
-      <h1>Type the Word Game</h1>
-      <h2>Score: {score}</h2>
-      <p>Definition: {currentWord.definition}</p>
+    <div class="typeWordContainer">
+      <h1 class="gameTileHeading">Type the Word</h1>
+      <br />
+      <div class="scoreTile">
+        <span class="badge">Score: {score}</span>
+        <img src={rewardIcon} />
+      </div>
+      {(isEmpty ?
+        <div>
+          <p>
+            Add words to play this game!
+          </p>
+        </div>
+        : <div id="addWordNotice">
+          <div class="questionTile">
+            <span>Definition: </span>
+            {currentWord.definition}
+          </div>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={inputWord}
-          onChange={handleInputChange}
-          placeholder="Type the word here"
-          required
-        />
-        <button type="submit">Submit</button>
-      </form>
+          <form onSubmit={handleSubmit}>
+            <div class="form-group typeWordForm">
+              <input
+                type="text"
+                class="form-control"
+                value={inputWord}
+                onChange={handleInputChange}
+                placeholder="Type the word here"
+                required
+              />
+              <button type="submit" class="btn btn-primary typeWordSubmitBtn">Submit</button>
+            </div>
+          </form>        </div>)}
+
+
     </div>
   );
 }
@@ -193,49 +212,53 @@ const CrosswordSkeleton = ({ words }) => {
 
   return (
     <div className="crossword-game-container">
-      <h1>Crossword Game</h1>
-      <div className="crossword-table">
+      <h1 className="crosswordHeading">Crossword Game</h1>
+      <div className="row">
 
-        {crosswordTable.map((row, rowIndex) => (
+        <div className="col crossword-table">
+          {crosswordTable.map((row, rowIndex) => (
+            <div key={rowIndex} className="row">
+              {row.map((cell, colIndex) => {
+                let wordIndex = null;
 
-          <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => {
-              const cellClass = cell === '-' ? 'cell-black' : 'cell-white';
-              const wordIndex = wordIndexes.find(idx => idx.row === rowIndex && idx.col === colIndex)
-                ? wordIndexes.find(idx => idx.row === rowIndex && idx.col === colIndex).number
-                : null;
+                wordIndex = wordIndexes.find(idx => idx.row === rowIndex + 1 && idx.col === colIndex + 1)
+                  ? wordIndexes.find(idx => idx.row === rowIndex + 1 && idx.col === colIndex + 1).number
+                  : null;
 
-              return (
-                <div className={`cell ${cellClass}`} key={colIndex}>
-                  {wordIndex && <div className="cell-number">{wordIndex}</div>}
-                  {cell !== '-' && (
-                    <input
-                      className="cell-input"
-                      value={userInput[rowIndex][colIndex] || ''}
-                      maxLength={2}
-                      onChange={(e) => handleInputChange(rowIndex, colIndex, e)}
-                      onKeyDown={(e) => handleKeyDown(rowIndex, colIndex, e)}
-                      ref={(el) => {
-                        if (!inputRefs.current[rowIndex]) {
-                          inputRefs.current[rowIndex] = [];
-                        }
-                        inputRefs.current[rowIndex][colIndex] = el;
-                      }}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        ))}
 
+                return (
+                  <div className={`cell ${cell === '-' ? 'cell-black' : 'cell-white'}`} key={colIndex}>
+                    {wordIndex && <div className="cell-number">{wordIndex}</div>}
+                    {cell !== '-' && (
+                      <input
+                        className="cell-input"
+                        value={userInput[rowIndex][colIndex] || ''}
+                        maxLength={2}
+                        onChange={(e) => handleInputChange(rowIndex, colIndex, e)}
+                        onKeyDown={(e) => handleKeyDown(rowIndex, colIndex, e)}
+                        ref={(el) => {
+                          if (!inputRefs.current[rowIndex]) {
+                            inputRefs.current[rowIndex] = [];
+                          }
+                          inputRefs.current[rowIndex][colIndex] = el;
+                        }}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+
+        <div className="col crosswordClueContainer">
+          <h3 className="clueHeading">Clues</h3>
+          <ul className="clueList">
+            {clues.map((clue, index) => <li key={index}>{clue}</li>)}
+          </ul>
+        </div>
       </div>
-
-      {winner && <h2>Winner!</h2>}
-      <h3>Clues:</h3>
-      <ul>
-        {clues.map((clue, index) => <li key={index}>{clue}</li>)}
-      </ul>
+      {winner && <h2 className="crosswordWinner">Winner!</h2>}
     </div >
   );
 };
@@ -246,7 +269,7 @@ const MultipleChoice = ({ words }) => {
   const [selectedWord, setSelectedWord] = useState(null);
   const [options, setOptions] = useState([]);
   const [score, setScore] = useState(0);
-
+  const isEmpty = (words.length === 0)
   useEffect(() => {
     resetGame();
   }, []);
@@ -293,18 +316,35 @@ const MultipleChoice = ({ words }) => {
   };
 
   return (
-    <div>
-      <h1>Multiple Choice Game</h1>
-      <h2>Word: {selectedWord && selectedWord.word}</h2>
-      <h3>Score: {score}</h3>
-      <p>Select the correct definition:</p>
-      <div className="choices-container">
-        {options.map((option, index) => (
-          <div key={index} id={`option-${index}`} className="choice" onClick={() => handleOptionClick(option, index)}>
-            {option.definition}
-          </div>
-        ))}
+    <div class="multipleChoiceContainer">
+      <h1 class="mcTileHeading">Multiple Choice Game</h1>
+      <div class="scoreTile">
+        Score: {score}
+        <img src={rewardIcon} />
       </div>
+      {
+        isEmpty
+          ? (
+            <div>
+              <p>Add words to play this game!</p>
+            </div>
+          )
+          : (
+            <React.Fragment>
+              <div class="mcQuestionTile">
+                Word: {selectedWord && selectedWord.word}
+                <div>Select the correct definition:</div>
+              </div>
+              <div className="choices-container">
+                {options.map((option, index) => (
+                  <div key={index} id={`option-${index}`} className="choice" onClick={() => handleOptionClick(option, index)}>
+                    {option.definition}
+                  </div>
+                ))}
+              </div>
+            </React.Fragment>
+          )
+      }
     </div>
   );
 };

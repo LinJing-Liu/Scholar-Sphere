@@ -15,11 +15,16 @@ const emptyWord = {
   tag: []
 }
 
-const AddWordCollapse = ({ tags, onAddWord }) => {
+const AddWordCollapse = ({ tags, onAddWord, words }) => {
   const [tempWord, setTempWord] = useState(emptyWord);
 
   const handleSubmit = (e) =>  {
     e.preventDefault();
+    const sameWord = words.filter(w => w.toString().toLowerCase() == tempWord.toString().toLowerCase());
+    if(sameWord.length > 0) {
+      alert("This word is already in the list!");
+      return;
+    }
     onAddWord(tempWord);
     resetFormState(true);
   }

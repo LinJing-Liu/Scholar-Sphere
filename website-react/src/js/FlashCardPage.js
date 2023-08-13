@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import FilterDropdown from './FilterDropdown';
-import io from 'socket.io-client';
 
 import '../css/FlashCardPage.css';
 
@@ -13,7 +12,6 @@ const FlashCardPage = ({ words, tags }) => {
     && (word.tag.filter(t => tagSelected.includes(t)).length > 0 || tagSelected.length == 0)
   );
   return <div id="flash-card-page-container">
-    start flashcards
     <br></br>
     <h1 id="flashcardsHeading">Flashcards</h1>
     <div id="filterContainer">
@@ -28,8 +26,6 @@ const FlashCardPage = ({ words, tags }) => {
       </div>
     </div>
     <FlashCards words={filteredWords}></FlashCards>
-    end flashcards
-    <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
   </div>;
 };
 
@@ -67,11 +63,25 @@ function FlashCards({ words }) {
 
   return (
     <div>
-      {isEmpty ? <div> <p>no words match your filters</p></div> : <div><FlashCard data={currentCard} />
-        <p>
-          {currentIndex + 1} out of {words.length}
-        </p> </div>}
-
+      {currentCard && !isEmpty ? 
+        <div>
+          <FlashCard data={currentCard} />
+          <p>
+            {currentIndex + 1} out of {words.length}
+          </p>
+        </div>
+      : (isEmpty ?
+        <div>
+          <p>
+            No words match your filters.
+          </p>
+        </div> 
+        : <div id="addWordNotice">
+          Add word to start using flashcards.
+          <br />
+          <a onClick={() => window.location.href="/word-list"}>Go to word list page to add word.</a>
+        </div>)
+      }
     </div>
   );
 }

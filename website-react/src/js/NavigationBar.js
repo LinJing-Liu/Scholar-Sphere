@@ -1,58 +1,30 @@
-import React, { useContext } from 'react';
-import { HashLink as Link } from 'react-router-hash-link';
-import { NavLink } from 'react-router-dom';
-
-import LastPageRouteContext from './LastPageRouteContext';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 
 import '../css/NavigationBar.css';
 
 const Navbar = () => {
-  const { lastRoute } = useContext(LastPageRouteContext);
-
-  const handleFlashcardsClick = (e) => {
-    if (lastRoute !== '/' && lastRoute !== '/#home') {
-      e.preventDefault();
-      window.location.href = '/#flashcards';
-    }
-  };
-
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <Link
-          onClick={() => window.scrollTo(0, 0)}
-          smooth
-          to="/#home"
-        >
+        <a to="/#home" onClick={() => {window.location.href="/#home"}}>
           ScholarSphere
-        </Link>
+        </a>
       </div>
       <div className="navbar-right">
-        <Link
-          onClick={() => window.scrollTo(0, 0)}
-          smooth
-          to="/#home"
-        >
+        <a to="/#home" onClick={() => {window.location.href="/#home"}}>
           Home
-        </Link>
-        <Link
-          smooth
-          to="/#flashcards"
-        >
+        </a>
+        <HashLink to="/#flashcards">
           Flashcards
-        </Link>
-        <NavLink
-          onClick={() => window.scrollTo(0, 0)}
-          to="/word-list"
-        >
+        </HashLink>
+        <a to="/word-list" onClick={() => {window.location.href="/word-list"}}>
           Word List
-        </NavLink>
-        <NavLink
-          onClick={() => window.scrollTo(0, 0)}
-          to="/games"
-        >
+        </a>
+        <a to="/game-page" onClick={() => {window.location.href="/game-page"}}>
           Games
-        </NavLink>
+        </a>
       </div>
     </nav>
   );
