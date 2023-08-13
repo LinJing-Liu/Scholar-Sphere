@@ -9,6 +9,7 @@ import '../css/GamePage.css';
 import rewardIcon from '../img/reward.png';
 
 const GamePage = ({ words }) => {
+
   return <div>
     <Navbar />
     <div className="game-page-container" id="game-page-container">
@@ -20,12 +21,12 @@ const GamePage = ({ words }) => {
       <TypeWord words={words} />
       <MultipleChoice words={words} />
       {words.length > 1 ? <CrosswordSkeleton words={words} />
-      :
+        :
         <div className="crossword-game-container">
           <h1 class="crosswordHeading">Crossword Game</h1>
           <div class="crosswordWordNotice">
             Crossword can be played only when there are at least two words.
-            <a onClick={() => window.location.href="/word-list"}>Go to word list page to add word.</a>
+            <a onClick={() => window.location.href = "/word-list"}>Go to word list page to add word.</a>
           </div>
         </div>
       }
@@ -38,7 +39,7 @@ function TypeWord({ words }) {
   const [currentWord, setCurrentWord] = useState({});
   const [score, setScore] = useState(0);
   const [inputWord, setInputWord] = useState('');
-
+  const isEmpty = (words.length === 0)
   // Initialize game with random word
   React.useEffect(() => {
     chooseRandomWord();
@@ -72,26 +73,35 @@ function TypeWord({ words }) {
       <br />
       <div class="scoreTile">
         <span class="badge">Score: {score}</span>
-        <img src={rewardIcon}/>
+        <img src={rewardIcon} />
       </div>
-      <div class="questionTile">
-        <span>Definition: </span>
-        {currentWord.definition}
-      </div>
-
-      <form onSubmit={handleSubmit}>
-        <div class="form-group typeWordForm">
-          <input
-            type="text"
-            class="form-control"
-            value={inputWord}
-            onChange={handleInputChange}
-            placeholder="Type the word here"
-            required
-          />
-          <button type="submit" class="btn btn-primary typeWordSubmitBtn">Submit</button>
+      {(isEmpty ?
+        <div>
+          <p>
+            Add words to play this game!
+          </p>
         </div>
-      </form>
+        : <div id="addWordNotice">
+          <div class="questionTile">
+            <span>Definition: </span>
+            {currentWord.definition}
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <div class="form-group typeWordForm">
+              <input
+                type="text"
+                class="form-control"
+                value={inputWord}
+                onChange={handleInputChange}
+                placeholder="Type the word here"
+                required
+              />
+              <button type="submit" class="btn btn-primary typeWordSubmitBtn">Submit</button>
+            </div>
+          </form>        </div>)}
+
+
     </div>
   );
 }
@@ -202,20 +212,22 @@ const CrosswordSkeleton = ({ words }) => {
 
   return (
     <div className="crossword-game-container">
-      <h1 class="crosswordHeading">Crossword Game</h1>
-      <div class="row">
-        
+      <h1 className="crosswordHeading">Crossword Game</h1>
+      <div className="row">
+
         <div className="col crossword-table">
           {crosswordTable.map((row, rowIndex) => (
             <div key={rowIndex} className="row">
               {row.map((cell, colIndex) => {
-                const cellClass = cell === '-' ? 'cell-black' : 'cell-white';
-                const wordIndex = wordIndexes.find(idx => idx.row === rowIndex && idx.col === colIndex)
-                  ? wordIndexes.find(idx => idx.row === rowIndex && idx.col === colIndex).number
+                let wordIndex = null;
+
+                wordIndex = wordIndexes.find(idx => idx.row === rowIndex + 1 && idx.col === colIndex + 1)
+                  ? wordIndexes.find(idx => idx.row === rowIndex + 1 && idx.col === colIndex + 1).number
                   : null;
 
+
                 return (
-                  <div className={`cell ${cellClass}`} key={colIndex}>
+                  <div className={`cell ${cell === '-' ? 'cell-black' : 'cell-white'}`} key={colIndex}>
                     {wordIndex && <div className="cell-number">{wordIndex}</div>}
                     {cell !== '-' && (
                       <input
@@ -239,14 +251,14 @@ const CrosswordSkeleton = ({ words }) => {
           ))}
         </div>
 
-        <div class="col crosswordClueContainer">
-          <h3 class="clueHeading">Clues</h3>
-          <ul class="clueList">
+        <div className="col crosswordClueContainer">
+          <h3 className="clueHeading">Clues</h3>
+          <ul className="clueList">
             {clues.map((clue, index) => <li key={index}>{clue}</li>)}
           </ul>
         </div>
       </div>
-      {winner && <h2 class="crosswordWinner">Winner!</h2>}
+      {winner && <h2 className="crosswordWinner">Winner!</h2>}
     </div >
   );
 };
@@ -257,7 +269,7 @@ const MultipleChoice = ({ words }) => {
   const [selectedWord, setSelectedWord] = useState(null);
   const [options, setOptions] = useState([]);
   const [score, setScore] = useState(0);
-
+  const isEmpty = (words.length === 0)
   useEffect(() => {
     resetGame();
   }, []);
@@ -310,17 +322,29 @@ const MultipleChoice = ({ words }) => {
         Score: {score}
         <img src={rewardIcon} />
       </div>
-      <div class="mcQuestionTile">
-        Word: {selectedWord && selectedWord.word}
-        <div>Select the correct definition:</div>
-      </div>
-      <div className="choices-container">
-        {options.map((option, index) => (
-          <div key={index} id={`option-${index}`} className="choice" onClick={() => handleOptionClick(option, index)}>
-            {option.definition}
-          </div>
-        ))}
-      </div>
+      {
+        isEmpty
+          ? (
+            <div>
+              <p>Add words to play this game!</p>
+            </div>
+          )
+          : (
+            <React.Fragment>
+              <div class="mcQuestionTile">
+                Word: {selectedWord && selectedWord.word}
+                <div>Select the correct definition:</div>
+              </div>
+              <div className="choices-container">
+                {options.map((option, index) => (
+                  <div key={index} id={`option-${index}`} className="choice" onClick={() => handleOptionClick(option, index)}>
+                    {option.definition}
+                  </div>
+                ))}
+              </div>
+            </React.Fragment>
+          )
+      }
     </div>
   );
 };

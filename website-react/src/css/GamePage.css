@@ -2,24 +2,29 @@
     margin: 0;
     padding: 0;
 }
+
 #game-page-header {
     background-color: #e0eeff;
     margin: 0;
     padding: 10rem 0rem;
     padding-top: 13rem;
 }
+
 #gamePageHeading {
     font-size: 5rem;
     text-transform: uppercase;
     font-weight: 300;
     color: #8d61e6;
 }
+
 #gamePageSubheading {
     font-weight: 200;
     word-spacing: 0.50rem;
     color: #8d61e6;
 }
-.gameTileHeading, .mcTileHeading {
+
+.gameTileHeading,
+.mcTileHeading {
     font-size: 2rem;
     font-weight: 300;
     background-color: #8d61e6;
@@ -29,17 +34,21 @@
     border-radius: 15px;
     margin-top: 30px;
 }
+
 .scoreTile {
     margin-top: 20px;
 }
+
 .scoreTile .badge {
     font-weight: 400;
     font-size: 1rem;
     color: #673bbe;
 }
+
 .scoreTile img {
     max-width: 30px;
 }
+
 .typeWordContainer {
     background-color: #bbf4e8;
     margin: 3rem;
@@ -48,15 +57,18 @@
     margin-left: auto;
     margin-right: auto;
 }
+
 .questionTile {
     font-size: 1rem;
     color: #673bbe;
 }
+
 .typeWordForm .form-control {
     max-width: 40%;
     font-size: 1rem;
     display: inline-flex;
 }
+
 .typeWordSubmitBtn {
     background-color: white;
     color: #8d61e6;
@@ -65,11 +77,13 @@
     margin: 30px 10px;
     display: inline-flex;
 }
+
 .typeWordSubmitBtn:hover {
     background-color: #8d61e6;
     color: white;
     border: 2px solid #8d61e6;
 }
+
 .crossword-game-container {
     background-color: #e0eeff;
     max-width: 1000px;
@@ -80,11 +94,13 @@
     margin-bottom: 5rem;
     padding: 3rem;
 }
+
 .crosswordHeading {
     font-weight: 300;
     margin-bottom: 2rem;
     color: #8d61e6;
 }
+
 .clueHeading {
     font-weight: 300;
     align-items: baseline;
@@ -95,19 +111,24 @@
     display: flex;
     margin-left: 2rem;
 }
+
 .crosswordWinner {
     margin-top: 2rem;
     color: #8d61e6;
     font-weight: 300;
 }
+
 .crossword-table {
     padding: 0;
     margin: 0;
 }
+
 .crossword-table .row {
-    float: right;
+    display: flex;
+    flex-wrap: nowrap;
     margin-right: 1rem;
 }
+
 .multipleChoiceContainer {
     background-color: rgb(138, 84, 245);
     color: white;
@@ -117,45 +138,54 @@
     margin-right: auto;
     padding-bottom: 30px;
 }
+
 .mcTileHeading {
     background-color: rgba(255, 255, 255, 0);
 }
+
 .mcQuestionTile {
     font-size: 1rem;
     margin-top: 1rem;
 }
+
 .row {
     display: flex;
 }
+
 .cell {
+    --cell-size: 35px;
     position: relative;
-    width: 30px;
-    height: 30px;
+    width: var(--cell-size);
+    aspect-ratio: 1 / 1;
+    /* ensures height is always equal to width */
     border: 1px solid #000;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    min-width: 40px;
-    min-height: 40px;
+    font-size: 1.2rem;
+    min-width: 20px;
+    min-height: 20px;
     max-width: 60px;
     max-height: 60px;
 }
+
 .cell-black {
     background-color: black;
 }
+
 .cell-white {
     background-color: white;
 }
+
 .cell-number {
     position: absolute;
-    top: -45px;
-    /* Adjust as necessary */
-    left: -40px;
-    /* Adjust as necessary */
-    font-size: 1rem;
+    top: 0;
+    left: 0;
+    font-size: .8rem;
+    color: black;
     font-weight: 300;
 }
+
 .cell-input {
     width: 100%;
     height: 100%;
@@ -165,11 +195,13 @@
     background: transparent;
     outline: none;
 }
+
 .crosswordClueContainer {
     align-items: baseline;
     margin: 0;
     padding: 0;
 }
+
 .clueList li {
     display: flex;
     margin: 0.5rem 3rem;
@@ -177,6 +209,7 @@
     align-items: baseline;
     font-size: 1rem;
 }
+
 .choices-container {
     display: flex;
     flex-wrap: wrap;
@@ -184,6 +217,7 @@
     padding: 0;
     margin-top: 15px;
 }
+
 .choice {
     display: inline-flex;
     align-items: center;
@@ -199,28 +233,34 @@
     height: 80px;
     font-size: 1rem;
 }
+
 .choice:hover {
     background-color: rgba(255, 255, 255);
     color: rgb(138, 84, 245);
 }
+
 .choice:active {
     border-color: red;
     border-color: #00ff08;
 }
+
 .wrong {
     border-color: red;
 }
+
 .correct {
     border-color: #00ff08;
 }
+
 .crosswordWordNotice {
     padding: 1rem;
     font-size: 1.5rem;
     color: black;
     font-weight: 300;
 }
+
 .crosswordWordNotice a {
     display: block;
-    color: rgb(138, 84, 245)!important;
-    text-decoration: underline!important;
+    color: rgb(138, 84, 245) !important;
+    text-decoration: underline !important;
 }
