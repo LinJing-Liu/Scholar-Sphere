@@ -15,6 +15,10 @@ function App() {
   const [tags, setTags] = useState(() => {
     var savedTags = localStorage.getItem("tags");
     savedTags = savedTags ? JSON.parse(savedTags) : [];
+    if(savedTags.indexOf("starred") == -1) {
+      savedTags.push("starred");
+      localStorage.setItem("tags", JSON.stringify(savedTags));
+    }
     const socket = io('http://localhost:5000');
     socket.emit("sync tag", { savedTags });
 

@@ -10,18 +10,20 @@
     margin-left: 5rem;
     text-align: left;
     color: #f08377;
+    margin-bottom: 2rem;
 }
 .flashcard-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    perspective: 1000px;  
+    perspective: 1000px;
+    margin-top: 3rem;  
+    margin-bottom: 1.5rem;
 }
 .flashcard {
     width: 80vh;
     height: 50vh;
     margin: 10px;
-    border: 1px solid #ccc;
     border-radius: 10px;
     cursor: pointer;
     transition: transform 0.6s;
@@ -30,7 +32,6 @@
 .flashcard-content {
     max-height: 250px;
     overflow-y: auto;
-    display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -51,11 +52,18 @@
     box-sizing: border-box;
 }
 .flashcard-front {
-    background-color: #f9f9f9;
+    background-color: #fce8d0cb;
+    border: 8px solid #f6c7b3;
+    color: #f08377;
+    font-size: 2.5rem;
+    font-weight: 200;
 } 
 .flashcard-back {
-    background-color: #eaeaea;
+    background-color: #f6c7b3;
+    border: 8px solid #fce8d0cb;
     transform: rotateY(180deg);
+    font-size: 1.5rem;
+    font-weight: 100;
 }
 #addWordNotice {
     padding: 2rem;
@@ -64,4 +72,75 @@
 #addWordNotice a {
     text-decoration: underline;
     color: #f08377;
+}
+#filterContainer, #displayFilterContainer {
+    display: inline-flex;
+}
+#cardFilterHeading, #displayFilterHeading {
+    font-size: 1.5rem;
+    padding-right: 2rem;
+}
+#displayFilterHeading {
+    color: #f77569;
+}
+#cardFilterHeading {
+    color: #d28741;
+}
+#cardTagsdropdownBtn, #cardConfidenceLeveldropdownBtn {
+    color: #d28741;
+    border-color: #a77241;
+    background-color: #fffdef;
+}
+#cardTagsdropdownBtn:hover, #cardConfidenceLeveldropdownBtn:hover {
+    background-color: #d28741;
+    color: #fffdef;
+}
+.cardTags-check-label, .cardConfidenceLevel-check-label {
+    color: #d28741!important;
+}
+#frontDisplaydropdownBtn, #backDisplaydropdownBtn {
+    color: #f77569;
+    border-color: #f77569;
+    background-color: white;
+}
+#frontDisplaydropdownBtn:hover, #backDisplaydropdownBtn:hover {
+    background-color: #f77569;
+    color: white;
+}
+.frontDisplay-check-label, .backDisplay-check-label {
+    color: #f77569!important;
+}
+.cardTagsBadge, .cardConfidenceLevelBadge {
+    background-color: #d48d4bad!important;
+    border-color: #fffdef!important;
+    color: #fffdef!important;
+}
+.cardCountLabel {
+    color: #f08377;
+    font-size: 1.25rem;
+    font-weight: 100;
+}
+.flashcardModalList {
+    align-items: baseline;
+    text-align: left;
+    list-style: decimal;
+    margin-left: 2rem;
+}
+.flashcardModalList li {
+    margin-bottom: 1rem;
+}
+#cardHelpBtn {
+    margin-left: 1rem;
+}
+#cardHelpModalTitle {
+    color: #f08377;
+    font-size: 1.5rem;
+}
+.modalCloseBtn {
+    background-color: #f08377;
+    border: 2px solid #f77569;
+}
+.modalCloseBtn:hover {
+    background-color: #f77569;
+    border: 2px solid #f77569;
 }

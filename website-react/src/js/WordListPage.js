@@ -37,10 +37,12 @@ const confidenceColor = [
   }
 ]
 
+const allConfidence = ["1", "2", "3", "4", "5"];
+
 const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, updateTags }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [tagSelected, setTagSelected] = useState([]);
-  const [confidenceSelected, setConfidenceSelected] = useState([]);
+  const [tagSelected, setTagSelected] = useState(tags);
+  const [confidenceSelected, setConfidenceSelected] = useState(allConfidence);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -57,7 +59,8 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
       (word.example && word.example.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (word.tags && word.tags.toLowerCase().includes(searchTerm.toLowerCase()))
     ) && (confidenceSelected.includes(word.confidence) || confidenceSelected.length == 0)
-    && (word.tag.filter(t => tagSelected.includes(t)).length > 0 || tagSelected.length == 0)
+    && ((word.tag.length == 0 && tagSelected.length == tags.length)
+      || word.tag.filter(t => tagSelected.includes(t)).length > 0 || tagSelected.length == 0)
   );
 
   return (
@@ -90,7 +93,7 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
                 <FilterDropdown display="Tags" label="tags" options={tags} selection={tagSelected} onSelect={setTagSelected}/>
               </div>
               <div class="col">
-                <FilterDropdown display="Confidence Level" label="confidence-level" options={["1", "2", "3", "4", "5"]} selection={confidenceSelected} onSelect={setConfidenceSelected}/>
+                <FilterDropdown display="Confidence Level" label="confidence-level" options={allConfidence} selection={confidenceSelected} onSelect={setConfidenceSelected}/>
               </div>
             </div>
           </div>
