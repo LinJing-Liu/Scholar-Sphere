@@ -38,14 +38,9 @@ const FilterDropdown = ({ display, label, options, selection, onSelect, displayS
             }
         }
 
-
+        newSelection.sort();
         onSelect(newSelection);
     }
-
-
-
-
-
 
     return (
         <div class="filterDropdown">
@@ -93,7 +88,8 @@ const FilterDropdown = ({ display, label, options, selection, onSelect, displayS
                         </div>
                     ))}
                 </div>
-            )}        </div>
+            )}        
+        </div>
     );
 }
 

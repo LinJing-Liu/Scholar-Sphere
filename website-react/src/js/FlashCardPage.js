@@ -3,11 +3,12 @@ import FilterDropdown from './FilterDropdown';
 
 import '../css/FlashCardPage.css';
 import helpIcon from '../img/help.png';
+import SortDropdown from './SortDropdown';
 
 const allConfidence = ["1", "2", "3", "4", "5"];
 const contentDisplay = ["Word", "Definition", "Explanation", "Example"];
 
-const FlashCardPage = ({ words, tags }) => {
+const FlashCardPage = ({ words, tags, setWords }) => {
   const [tagSelected, setTagSelected] = useState(tags);
   const [confidenceSelected, setConfidenceSelected] = useState(allConfidence);
 
@@ -36,6 +37,9 @@ const FlashCardPage = ({ words, tags }) => {
         </div>
         <div class="col">
           <FilterDropdown display="Back Display" label="backDisplay" options={contentDisplay} selection={backSelected} onSelect={setBackSelected} displaySelection={false} />
+        </div>
+        <div class="col">
+          <SortDropdown label={"Sort Words"} words={words} setWords={setWords} />
         </div>
       </div>
     </div>

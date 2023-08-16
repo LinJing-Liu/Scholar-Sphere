@@ -218,3 +218,8 @@
 .remove-filter-btn:hover {
     visibility: visible;
 }
+
+.sortDropdown .btn {
+    background-color: #ffdbcc;
+    color: #c25346;
+}

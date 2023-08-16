@@ -4,8 +4,9 @@ import DOMPurify from "dompurify";
 import Navbar from './NavigationBar';
 import FilterDropdown from './FilterDropdown';
 import AddWordForm from './AddWordForm';
-import '../css/WordListPage.css';
+import SortDropdown from './SortDropdown';
 
+import '../css/WordListPage.css';
 import searchIcon from '../img/search.png';
 import editIcon from '../img/edit.png';
 import deleteIcon from '../img/delete.png';
@@ -39,7 +40,7 @@ const confidenceColor = [
 
 const allConfidence = ["1", "2", "3", "4", "5"];
 
-const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, updateTags }) => {
+const WordListPage = ({ words, setWords, onUpdateWord, onDeleteWord, onAddWord, tags, updateTags }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [tagSelected, setTagSelected] = useState(tags);
   const [confidenceSelected, setConfidenceSelected] = useState(allConfidence);
@@ -59,9 +60,9 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
       word.explanation?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       word.example?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       word.tags?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) && (confidenceSelected.includes(word.confidence) || confidenceSelected.length == 0)
+    ) && (confidenceSelected.includes(word.confidence))
     && ((word.tag.length == 0 && tagSelected.length == tags.length)
-      || word.tag.filter(t => tagSelected.includes(t)).length > 0 || tagSelected.length == 0)
+      || word.tag.filter(t => tagSelected.includes(t)).length > 0)
   );
 
   return (
@@ -85,6 +86,13 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
               onChange={handleSearch}
               aria-describedby="inputGroup-sizing-default"
             />
+          </div>
+          
+          <div id="viewContainer">
+            <button className="btn primary-btn viewToggleButton" onClick={() => setSimpleView(!simpleView)}>
+              Show {simpleView ? 'Detailed' : 'Simple'} View
+            </button>
+            <SortDropdown label={"Sort Words"} words={words} setWords={setWords} />
           </div>
 
           <div id="filterContainer">
@@ -110,9 +118,6 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
               </div>
 
             </div>
-            <button onClick={() => setSimpleView(!simpleView)}>
-              Show {simpleView ? 'Detailed' : 'Simple'} View
-            </button>
           </div>
         </div>
 
@@ -126,7 +131,7 @@ const WordListPage = ({ words, onUpdateWord, onDeleteWord, onAddWord, tags, upda
 function WordList({ words, searchTerm, onUpdateWord, onDeleteWord, tags, simpleView }) {
   if (simpleView) {
     return (
-      <table>
+      <table class="table">
         <thead>
           <tr>
             <th>Word</th>

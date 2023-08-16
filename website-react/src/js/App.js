@@ -112,8 +112,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<HomePage words={words} tags={tags} />} />
-          <Route exact path="/word-list" element={<WordListPage words={words} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} onAddWord={handleAddWord} tags={tags} updateTags={handleUpdateTag} />} />
+          <Route exact path="/" element={<HomePage words={words} tags={tags} setWords={setWords} />} />
+          <Route exact path="/word-list" element={<WordListPage words={words} setWords={setWords} onUpdateWord={handleUpdateWord} onDeleteWord={handleDeleteWord} onAddWord={handleAddWord} tags={tags} updateTags={handleUpdateTag} />} />
           <Route exact path="/game-page" element={<GamePage words={words} />} />
         </Routes>
       </BrowserRouter>
