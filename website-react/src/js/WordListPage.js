@@ -60,7 +60,7 @@ const WordListPage = ({ words, setWords, onUpdateWord, onDeleteWord, onAddWord, 
       word.explanation?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       word.example?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       word.tags?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) && (confidenceSelected.includes(word.confidence))
+    ) && (confidenceSelected.includes(word.confidence.toString()))
     && ((word.tag.length == 0 && tagSelected.length == tags.length)
       || word.tag.filter(t => tagSelected.includes(t)).length > 0)
   );

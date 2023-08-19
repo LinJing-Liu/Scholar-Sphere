@@ -34,17 +34,17 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-document.getElementById('intervalForm').addEventListener('submit', function (event) {
-  event.preventDefault();
-  let minutes = parseFloat(document.getElementById('minutes').value);
-  if (isNaN(minutes)) {
-    console.error('Invalid minutes:', document.getElementById('minutes').value);
-    return;
-  }
+// document.getElementById('intervalForm').addEventListener('submit', function (event) {
+//   event.preventDefault();
+//   let minutes = parseFloat(document.getElementById('minutes').value);
+//   if (isNaN(minutes)) {
+//     console.error('Invalid minutes:', document.getElementById('minutes').value);
+//     return;
+//   }
 
-  console.log('Sending message:', minutes);
-  chrome.runtime.sendMessage({ minutes: minutes });
-});
+//   console.log('Sending message:', minutes);
+//   chrome.runtime.sendMessage({ minutes: minutes });
+// });
 
 
 function onLoad(b) {

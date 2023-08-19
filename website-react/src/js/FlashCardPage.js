@@ -13,7 +13,7 @@ const FlashCardPage = ({ words, tags, setWords }) => {
   const [confidenceSelected, setConfidenceSelected] = useState(allConfidence);
 
   const filteredWords = words.filter(word =>
-    confidenceSelected.includes(word.confidence)
+    confidenceSelected.includes(word.confidence.toString())
     && (word.tag.filter(t => tagSelected.includes(t)).length > 0
       || (tagSelected.length == tags.length && word.tag.length == 0))
   );
