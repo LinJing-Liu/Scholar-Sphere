@@ -1,81 +1,52 @@
 .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+
     display: flex;
     justify-content: space-between;
     padding: 1.5em 0;
-    /* Increased vertical padding, removed horizontal padding */
     background-color: #8fcaca;
     font-size: medium;
-} 
+}
+
 .navbar-left,
 .navbar-right {
     display: flex;
     align-items: center;
-} 
+}
+
 .navbar-left {
     margin-left: 40px;
     margin-right: auto;
     /* Added margin-right: auto to push navbar-left to the left side */
-}  
+}
+
 .navbar-right {
     display: flex;
     align-items: center;
     padding-right: 40px;
 }
+
 .navbar-left a {
     text-decoration: none;
     color: #417676;
     font-size: large;
     font-weight: 500;
 }
+
 .navbar-left a:hover {
     color: white;
 }
-.navbar-right a,
-.navbar-right Link {
+
+.navbar-right a {
     margin-left: 25px;
-    color: #ffffff;
+    color: #ffffff!important;
     text-decoration: none;
-} 
-.navbar-right a:hover {
-    color: #417676;
 }
 
-/* applies to old version of navigation bar */
-.fixed-nav-buttons {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #6ed6dd;
-    padding: 0;
-    /* Removed padding */
-    display: flex;
-    justify-content: flex-end;
-    /* Align buttons to the right side */
-    align-items: center;
-    z-index: 9999;
-} 
-.fixed-nav-buttons .buttons {
-    display: flex;
-    gap: 0;
-    flex: 1;
-    /* Added flex: 1 to distribute remaining space evenly */
-    max-width: 67%;
-    /* Set max-width to 67% of the screen width */
-    overflow-x: auto;
-  
-    /* Enable horizontal scrolling */
-} 
-.fixed-nav-buttons .buttons button {
-    flex: 1;
-    /* Make buttons the same width and distribute remaining space evenly */
-    height: 3em;
-    background-color: #ff0000;
-    /* Set button height to 3x the previous height */
-    margin: 0;
-} 
-.fixed-nav-buttons .brand {
-    margin-left: 10px;
-    margin-right: auto;
-    /* Added margin-right: auto to push .brand to the left side */
+.navbar-right a:hover {
+    color: #417676!important;
 }

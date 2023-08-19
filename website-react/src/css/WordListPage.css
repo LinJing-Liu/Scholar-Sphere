@@ -1,14 +1,17 @@
-#word-list-page-container {
-    padding: 100px 50px;
-    padding-bottom: 150px;
+#word-list-page-header {
+    padding: 6rem 2rem;
+    padding-bottom: rem;
     background-color: #fffdf5;
+    border-bottom: 1rem solid #f08377;
 }
+
 #wordlistHeading {
     font-size: 5rem;
     font-weight: 300;
     color: #f08377;
     text-transform: uppercase;
 }
+
 #searchInputDiv {
     align-items: center;
     padding: 0.5rem 0;
@@ -17,53 +20,67 @@
     margin-left: auto;
     margin-right: auto;
 }
+
 #inputGroup-sizing-default {
     background-color: #ffdbcc;
     font-size: 1.25rem;
     color: #c25346;
 }
+
 #searchInputDiv input {
     font-size: 1.25rem;
 }
+
 #searchInputDiv img {
     max-width: 30px;
     padding: 0;
     margin: 0;
 }
+
 #filterContainer {
     display: inline-flex;
+    margin-top: 2.5rem;
 }
-#filterHeading {
+
+#filterHeading,
+#controlHeading {
     font-size: 1.5rem;
     color: #c25346;
     padding-right: 2rem;
 }
+
 .dropdown-toggle {
     font-size: 1.25rem;
     background-color: #fefee6;
     color: #c25346;
     border: 1px solid #c25346;
 }
+
 .dropdown-toggle:hover {
     background-color: #c25346;
     color: #fefee6;
     border: 1px solid #c25346;
 }
+
 .dropdown-toggle:active {
     background-color: #c25346;
     color: #fefee6;
     border: 1px solid #c25346;
 }
+
 .selectAll label {
     text-decoration: underline;
 }
+
 .dropdown-menu {
     padding: 15px;
 }
+
 .dropdown-menu .form-check label {
     font-size: 1.2rem;
     color: #c25346;
 }
+
 .filterDropdown .badge {
     font-size: 1rem;
     font-weight: 300;
@@ -73,27 +90,343 @@
     margin: 0.5rem;
     padding: 0.5rem;
 }
+
 .dropdown {
     margin-bottom: 10px;
 }
+
+#word-list-page-content {
+    background-color: white;
+    padding: 6rem 3rem;
+    padding-top: 1rem;
+}
+
 .word-list {
     margin-top: 3rem;
 }
+
 .word-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 20px;
     padding: 20px;
 }
+
 .word-item {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    background-color: #f9f9f9;
+    padding: 2rem;
+    margin: 0.75rem;
+    text-align: left;
+    border-radius: 15px;
 }
+
 .highlight {
     background-color: yellow;
 }
+
 .word-picture {
-    max-width: 100px;
+    max-width: 60%;
+}
+
+.word-confidence {
+    margin-left: 0;
+}
+
+.word-confidence .badge {
+    color: black;
+    font-size: 0.75rem;
+    font-weight: 400;
+    padding: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.word-heading {
+    font-weight: 300;
+    font-size: 2rem;
+    margin-bottom: 0;
+}
+
+.word-explanation,
+.word-definition {
+    margin: 0;
+}
+
+.word-explanation label,
+.word-example label {
+    display: block;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: small;
+    color: #6d6c6c;
+}
+
+.tag-badge {
+    font-size: 0.9rem;
+    font-weight: 400;
+    background-color: white;
+    color: black;
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.word-button {
+    background-color: white;
+    margin: 0.5rem 0;
+    margin-right: 0.5rem;
+    border-radius: 15px;
+}
+
+.word-button img {
+    max-width: 1.5rem;
+}
+
+.edit-button,
+.save-button {
+    border: 1px solid blue;
+}
+
+.delete-button,
+.cancel-button {
+    border: 1px solid red;
+}
+
+.edit-button:hover,
+.save-button:hover {
+    background-color: blue;
+    color: white;
+}
+
+.delete-button:hover,
+.cancel-button:hover {
+    background-color: red;
+    color: white;
+}
+
+.add-tag-section img,
+.remove-tag-section img {
+    max-width: 1.5rem;
+}
+
+.edit-form label {
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+.edit-form .form-group {
+    margin-bottom: 0.25rem;
+}
+
+.edit-form input,
+.edit-form textarea {
+    font-size: 0.9rem;
+    padding: 0.25rem;
+}
+
+.edit-form textarea {
+    height: 3rem;
+}
+
+.edit-form #confidence-select {
+    display: inline;
+    max-width: 30%;
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+    color: black;
+    padding: 0.25rem;
+}
+
+#addWordContainer {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#controlContainer .toggle-btn {
+    background-color: white;
+    color: #ec527e;
+    border: 2px solid #ec527e;
+    font-size: 1.25rem;
+}
+
+#controlContainer .toggle-btn:hover {
+    background-color: #ec527e;
+    color: white;
+}
+
+#controlContainer #addWordCollpaseBtn {
+    display: flex;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+#controlContainer #tagCollapseBtn {
+    display: flex;
+}
+
+.addWordForm {
+    margin: 0;
+    margin-top: 1rem;
+    border: 2px solid #ec527e;
+}
+
+.addWordForm .form-group {
+    margin-bottom: 0.55rem;
+}
+
+.addWordForm label {
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.addWordForm input,
+.addWordForm textarea,
+.addWordForm #confidence-select {
+    font-size: 0.9rem;
+    padding: 0.25rem;
+    margin: 0;
+    color: black;
+    border: 1px solid black;
+}
+
+.addWordForm #confidence-select {
+    width: 30%;
+}
+
+#tagContainer {
+    background-color: white;
+    border: 2px solid #ec527e;
+    border-radius: 15px;
+    margin: 1rem;
+}
+
+#addWordContainer button,
+#tagContainer button {
+    border: 2px solid #ec527e;
+    color: #ec527e;
+}
+
+#addWordContainer button:hover,
+#tagContainer button:hover {
+    background-color: #ec527e;
+    color: white;
+}
+
+#tagContainer button {
+    margin: 1rem;
+    border-radius: 15px;
+    display: block;
+}
+
+#tagContainer .input-group {
+    margin: 0.5rem;
+    margin-left: 2rem;
+    width: 75%;
+}
+
+#tagContainer .input-group input {
+    padding: 0.5rem;
+    color: black;
+    border: 1px solid black;
+    font-size: 0.9rem;
+}
+
+#tagContainer .input-group .input-group-append {
+    margin-left: 0.5rem;
+}
+
+#tagContainer .input-group .input-group-append img {
+    max-width: 30px;
+    max-height: 30px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#tagContainer #tagLabel {
+    font-size: 1.25rem;
+    color: #ec527e;
+    display: flex;
+    margin-left: 1rem;
+    margin-top: 1rem;
+}
+
+#tagContainer .form-check {
+    font-size: 1.25rem;
+    display: flex;
+    margin-left: 2rem;
+}
+
+#tagContainer .form-check input {
+    transform: scale(1.5);
+}
+
+#tagContainer .form-check label {
+    margin-left: 0.5rem;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+
+.filterDropdown .badge:hover+.remove-filter-btn,
+.remove-filter-btn:hover {
+    visibility: visible;
+}
+
+table {
+    width: 80%;
+    /* Adjust width as per requirement */
+    margin: 4rem auto;
+    /* Centers the table */
+    border-collapse: collapse;
+    /* Ensures border doesn't double up */
+    border: 3px solid #1e5c5c!important;
+}
+
+th, 
+thead,
+td {
+    border: 1px solid #1e5c5c!important;
+    padding: 8px 12px;
+    /* Adds some spacing around the content inside table cells */
+    text-align: left;
+    /* Left-aligns the text */
+}
+
+th {
+    background-color: #bcf5f5;
+    color: #1e5c5c;
+    text-align: center;
+    /* Adds a slight grey background to header cells */
+}
+
+tr:hover {
+    background-color: #edffff;
+    border: 2px solid #1e5c5c;
+    font-size: 1.25rem;
+}
+
+thead {
+    text-align:right;
+}
+
+.viewToggleButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fefee6;
+    color: #c25346;
+    font-size: 1.25rem;
+    border: 1px solid #c25346;
+    margin-bottom: 1rem;
+}
+
+.viewToggleButton:hover {
+    background-color: #c25346;
+    color: #fefee6;
+    border: 1px solid #c25346;
+}
+
+#viewContainer .btn {
+    background-color: #ffdbcc;
+    color: #c25346;
 }

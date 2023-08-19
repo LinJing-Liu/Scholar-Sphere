@@ -29,3 +29,10 @@ ul {
   padding: 0;
   margin: 0
 }
+
+.welcome-wrapper,
+.game-page-container,
+.word-list-page-container,
+.flash-card-page-container {
+  padding-top: 80px;
+}
